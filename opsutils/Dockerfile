@@ -2,7 +2,9 @@ FROM monlor/ubuntu-base:latest
 
 LABEL MAINTAINER="me@monlor.com"
 
-RUN apt update && apt install -y build-essential vim dnsutils net-tools iputils-ping iproute2 telnet bat trash-cli mariadb-client upx openssh-server python3 python3-pip nodejs rsync tree jq zip zsh && \
+ENV DOCKER_VERSION="20.10.14"
+
+RUN apt update && apt install -y build-essential vim dnsutils net-tools iputils-ping iproute2 telnet bat trash-cli mariadb-client upx openssh-server python3 python3-pip nodejs rsync tree jq zip zsh git && \
     # python 工具
     ln -sf /usr/bin/python3 /usr/bin/python && \
     pip3 install ydcv mycli yq && \
@@ -16,3 +18,5 @@ RUN apt update && apt install -y build-essential vim dnsutils net-tools iputils-
     # 安装zsh
     echo 'y' | sh -c "$(curl -fsSL https://github.do/https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
     usermod -s /bin/zsh root
+
+CMD [ "tail", "-f", "/dev/null" ]
