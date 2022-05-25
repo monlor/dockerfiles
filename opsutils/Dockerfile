@@ -16,7 +16,7 @@ RUN apt update && apt install -y build-essential vim dnsutils net-tools iputils-
     tar xzvf docker-${DOCKER_VERSION}.tgz --strip 1 -C /usr/local/bin docker/docker && \
     rm -rf docker-${DOCKER_VERSION}.tgz && \
     # 安装zsh
-    echo 'y' | sh -c "$(curl -fsSL https://github.do/https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+    echo 'y' | sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
     usermod -s /bin/zsh root
 
 CMD [ "tail", "-f", "/dev/null" ]
