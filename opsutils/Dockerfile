@@ -26,6 +26,6 @@ RUN apt update && apt install -y build-essential vim dnsutils net-tools iputils-
     cp /tmp/tidb-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/bin/* /usr/bin && \
     rm -rf /tmp/tidb-* && \
     # alias
-    echo "alias k=kubectl" >> /root/.zshrc
+    echo "alias k=kubectl" >> /etc/profile
 
 CMD [ "tail", "-f", "/dev/null" ]
