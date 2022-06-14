@@ -30,4 +30,6 @@ RUN apk update && apk add --no-cache age curl git bash vim make python3 && \
     ln -sf /usr/bin/python3 /usr/bin/python && \
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
     unzip awscli-bundle.zip && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
-    rm -rf ./awscli-bundle.zip ./awscli-bundle
+    rm -rf ./awscli-bundle.zip ./awscli-bundle && \
+    # alias
+    echo "alias k=kubectl" >> /etc/profile 
