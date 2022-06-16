@@ -31,5 +31,5 @@ RUN apk update && apk add --no-cache age curl git bash vim make python3 && \
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
     unzip awscli-bundle.zip && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
     rm -rf ./awscli-bundle.zip ./awscli-bundle && \
-    # alias
-    echo "alias k=kubectl" >> /etc/profile 
+    # coding
+    pip install qciplugin -i https://coding-public-pypi.pkg.coding.net/cci/qci/simple/ --trusted-host coding-public-pypi.pkg.coding.net --extra-index https://mirrors.tencent.com/pypi/simple/
