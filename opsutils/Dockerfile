@@ -24,6 +24,9 @@ RUN apt update && apt install -y build-essential vim dnsutils net-tools iputils-
     curl -Lo /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz https://download.pingcap.org/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz \
     && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /tmp \
     && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/br-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /usr/bin \
+    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/dumpling-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /usr/bin \
+    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/tidb-lightning-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /usr/bin \
+    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/{tidb-lightning-ctl,mydumper,etcdctl} /usr/bin \
     && rm -rf /tmp/tidb-* && \
     # alias
     echo "alias k=kubectl" >> /etc/profile
