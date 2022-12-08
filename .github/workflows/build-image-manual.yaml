@@ -9,8 +9,15 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'Image name'     
+        description: 'Image name'
         required: true
+        type: choice
+        options:
+        - coder-development
+        - fluentd
+        - helmfile
+        - opsutils
+        - tidb-toolkit
       tag:
         description: 'Image tag'
         required: true
