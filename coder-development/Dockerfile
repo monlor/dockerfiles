@@ -1,5 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
+ENV LANG='C.UTF-8' LC_ALL='C.UTF-8'
+
 USER root
 
 RUN curl -fsSL https://code-server.dev/install.sh | sh
