@@ -14,6 +14,9 @@ RUN npm install --global yarn tyarn && \
     ln -sf /usr/bin/python3 /usr/bin/python && \
     pip3 install ydcv mycli 
 
+RUN brew tap monlor/taps && \
+    brew install monlor/taps/spug-cli
+
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone && \
     # 修改用户shell
     usermod -s /bin/zsh coder 
