@@ -4,7 +4,7 @@ LABEL MAINTAINER="me@monlor.com"
 
 ENV DOCKER_VERSION="20.10.14"
 
-ENV TIDB_TOOLKIT_VERSION=v6.2.0
+ENV TIDB_TOOLKIT_VERSION=v6.5.0
 
 RUN apt update && apt install -y vim dnsutils net-tools iputils-ping iproute2 telnet bat trash-cli mariadb-client upx openssh-server python3 python3-pip rsync tree jq zip zsh git traceroute && \
     # python 工具
