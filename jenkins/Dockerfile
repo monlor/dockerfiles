@@ -1,11 +1,11 @@
 FROM jenkins/jenkins:2.375.3-lts
 
-LABEL MAINTAINER="me@monlor.com"
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 1.0.3
 
 USER root
 
-RUN apt install -y --no-install-recommends locales tzdata curl && apt clean && \
-    echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen zh_CN.UTF-8 && \
+RUN apt install -y --no-install-recommends tzdata curl && apt clean && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone 
 
 USER jenkins
