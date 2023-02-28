@@ -23,11 +23,11 @@ on:
         description: 'Image tag'
 
 env:
-  NAME: ${{ github.event.inputs.name }}
+  NAME: ${{ github.event.inputs.project }}
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: monlor/${{ github.event.inputs.name }}
+  IMAGE_NAME: monlor/${{ github.event.inputs.project }}
 
 jobs:
   build:
