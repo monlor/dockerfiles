@@ -28,7 +28,8 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: monlor/${{ github.event.inputs.name }}:${{ github.event.inputs.tag }}
+  IMAGE_NAME: monlor/${{ github.event.inputs.name }}
+  IMAGE_TAG: ${{ github.event.inputs.tag }}
 
 jobs:
   build:
@@ -75,7 +76,7 @@ jobs:
         with:
           context: ${{ env.NAME }}
           push: true
-          tags: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }},${{ env.IMAGE_NAME }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       
