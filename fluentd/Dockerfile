@@ -1,6 +1,7 @@
 FROM fluentd:v1.9.1-1.0
 
-LABEL MAINTAINER="me@monlor.com"
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 1.0.1
 
 USER root
 

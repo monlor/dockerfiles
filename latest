@@ -1,6 +1,0 @@
-code-development:v0.0.3
-fluentd:v1.0.1
-helmfile:v1.0.1
-opsutils:v1.0.4
-tidb-toolkit:v1.0.2
-jenkins:v1.0.2

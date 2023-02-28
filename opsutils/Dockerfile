@@ -1,6 +1,7 @@
 FROM monlor/ubuntu-base:latest
 
-LABEL MAINTAINER="me@monlor.com"
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 1.0.4
 
 ENV DOCKER_VERSION="20.10.14"
 

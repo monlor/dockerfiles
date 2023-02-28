@@ -1,6 +1,7 @@
 FROM monlor/ubuntu-base:latest
 
-LABEL MAINTAINER="me@monlor.com"
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 1.0.2
 
 ARG TIDB_TOOLKIT_VERSION=v5.4.0
 

@@ -1,5 +1,8 @@
 FROM codercom/enterprise-base:ubuntu
 
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 0.0.3
+
 ENV LANG='C.UTF-8' LC_ALL='C.UTF-8'
 
 USER root
