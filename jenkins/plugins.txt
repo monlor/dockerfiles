@@ -1,0 +1,7 @@
+configuration-as-code
+localization-zh-cn
+kubernetes
+kubernetes-cli
+lockable-resources
+workflow-aggregator
+ldap

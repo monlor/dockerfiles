@@ -18,6 +18,7 @@ on:
         - helmfile
         - opsutils
         - tidb-toolkit
+        - jenkins
       tag:
         description: 'Image tag'
         required: true
