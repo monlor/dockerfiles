@@ -57,7 +57,6 @@ jobs:
           docker_image_name=${{ secrets.DOCKER_USERNAME }}/${{ env.PROJECT_NAME }}
           aliyun_image_name=${{ secrets.ALIYUN_REGISTRY }}/${{ env.PROJECT_NAME }}
           tags=${docker_image_name}:${tag},${docker_image_name}:latest,${aliyun_image_name}:${tag},${aliyun_image_name}:latest
-          echo $tags | tr ',' '\n'
           echo "IMAGE_TAGS=${tags}" >> $GITHUB_ENV
 
       - name: Set up QEMU
@@ -131,7 +130,7 @@ jobs:
           host: ${{ secrets.BARK_HOST}} # not required
           key: ${{ secrets.BARK_KEY }}   # Your secret key
           title: Github Actions
-          body: '${{ env.PROJECT_NAME }} ran ${{ job.status }}！'
+          body: '${{ github.repository }}/${{ github.ref }}: ${{ env.PROJECT_NAME }} ran ${{ job.status }}！'
           isArchive: 1
           url: 'github://github.com/${{ github.repository }}'
           group: Github
