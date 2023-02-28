@@ -4,4 +4,9 @@ kubernetes
 kubernetes-cli
 lockable-resources
 workflow-aggregator
+git
+blueocean
 ldap
+oic-auth
+role-strategy
+matrix-auth

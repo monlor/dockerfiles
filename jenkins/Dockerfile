@@ -1,7 +1,7 @@
 FROM jenkins/jenkins:2.375.3-lts
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.4
+LABEL VERSION 1.0.5
 
 USER root
 
