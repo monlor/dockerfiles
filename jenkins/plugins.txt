@@ -10,3 +10,4 @@ ldap
 oic-auth
 role-strategy
 matrix-auth
+pipeline-stage-view
