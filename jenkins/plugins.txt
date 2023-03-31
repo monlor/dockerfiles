@@ -12,3 +12,4 @@ role-strategy
 matrix-auth
 pipeline-stage-view
 build-name-setter
+build-user-vars-plugin
