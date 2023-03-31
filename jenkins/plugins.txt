@@ -11,3 +11,4 @@ oic-auth
 role-strategy
 matrix-auth
 pipeline-stage-view
+build-name-setter
