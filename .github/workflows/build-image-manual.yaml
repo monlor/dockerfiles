@@ -19,6 +19,7 @@ on:
         - opsutils
         - tidb-toolkit
         - jenkins
+        - subconverter
       tag:
         description: 'Image tag'
 
