@@ -12,8 +12,7 @@ http服务端口8080
 ```
 docker run -d --name frps \
   -e AUTH_TOKEN=SUQAKTMb87 \
-  -p 7000:7000 \
-  -p 8080:8080 \
+  --network=host \
   --restart=unless-stopped \
   monlor/frps:latest
 ```
@@ -28,9 +27,7 @@ dashboard默认用户admin，访问端口7500
 docker run -d --name frps \
   -e DASHBOARD_PWD=7RFPyAXYxc \
   -e AUTH_TOKEN=SUQAKTMb87 \
-  -p 7000:7000 \
-  -p 7500:7500 \
-  -p 8080:8080 \
+  --network=host \
   --restart=unless-stopped \
   monlor/frps:latest
 ```
@@ -48,9 +45,7 @@ docker run -d --name frps \
   -e DASHBOARD_USER=admin \
   -e AUTH_TOKEN=SUQAKTMb87 \
   -e ALLOW_PORTS=2000-3000,3001,3003,4000-50000 \
-  -p 7000:7000 \
-  -p 7500:7500 \
-  -p 8080:8080 \
+  --network=host \
   --restart=unless-stopped \
   monlor/frps:latest
 ```
