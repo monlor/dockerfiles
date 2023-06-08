@@ -22,9 +22,10 @@ dashboard_user = ${DASHBOARD_USER:-admin}
 dashboard_pwd = ${DASHBOARD_PWD:-7RFPyAXYxc}
 
 # auth_token is used to authenticate frpc and frps. If auth_token is not set, no verification is done during operation.
-auth_token = ${AUTH_TOKEN:-SUQAKTMb87}
+token = ${AUTH_TOKEN:-SUQAKTMb87}
 
-# heartbeat_timeout is used to set the timeout for the heartbeat between frpc and frps. If the heartbeat is not received within the timeout, the proxy will be removed.
+# heartbeat_t
+imeout is used to set the timeout for the heartbeat between frpc and frps. If the heartbeat is not received within the timeout, the proxy will be removed.
 # heartbeat_timeout = 90
 
 # max_pool_count is used to set the maximum connection pool for each proxy. It can be adjusted according to actual needs.
