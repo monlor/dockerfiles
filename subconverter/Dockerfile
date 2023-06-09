@@ -1,7 +1,7 @@
 FROM tindy2013/subconverter
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 0.0.1
+LABEL VERSION 1.0.1
 
 ENV VERSION 0.7.3
 
@@ -13,7 +13,8 @@ RUN apk add tzdata && \
 
 COPY pref.yml /base
 
+COPY all_base.tpl /base/base
+
 EXPOSE 25500
 
-WORKDIR /base
 
