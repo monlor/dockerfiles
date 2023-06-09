@@ -1,7 +1,7 @@
 version: "3"
 services:
   subconverter:
-    image: monlor/subconverter:1.0.0
+    image: monlor/subconverter:1.0.1
     container_name: subconverter
     ports:
       - 25500:25500
