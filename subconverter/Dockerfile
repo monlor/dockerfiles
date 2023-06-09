@@ -1,7 +1,7 @@
 FROM tindy2013/subconverter
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.1
+LABEL VERSION 0.0.2
 
 ENV VERSION 0.7.3
 
