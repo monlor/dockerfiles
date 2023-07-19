@@ -21,6 +21,7 @@ on:
         - jenkins
         - subconverter
         - frps
+        - vmianqian
       tag:
         description: 'Image tag'
 
