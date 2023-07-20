@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libmcrypt-dev \
     git \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql 
+    && docker-php-ext-install gd mysqli pdo pdo_mysql bcmath
 
 # 设置网站目录
 WORKDIR /var/www/html
