@@ -22,6 +22,7 @@ on:
         - subconverter
         - frps
         - vmianqian
+        - epay
       tag:
         description: 'Image tag'
 
