@@ -4,6 +4,8 @@ FROM php:7.3-apache
 LABEL MAINTAINER me@monlor.com
 LABEL VERSION 1.0.0
 
+ENV TZ Asia/Shanghai
+
 # 更新包管理器索引并安装依赖库和PHP扩展
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
