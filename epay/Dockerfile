@@ -40,7 +40,5 @@ COPY start.sh /opt/start.sh
 
 RUN chmod +x /opt/start.sh
 
-COPY Payments /tmp/epay/app/Payments
-
 # 启动Apache服务
 CMD ["/opt/start.sh"]
