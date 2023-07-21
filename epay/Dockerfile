@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /var/www/html
 
 # 下载v免签服务源代码并解压到镜像中
-RUN git clone https://github.com/gugui90/Epay-master /tmp/epay && \
+RUN git clone https://github.com/monlor/Epay-master /tmp/epay && \
     rm -rf /tmp/epay/.git
 
 # 开启伪静态支持
@@ -39,6 +39,8 @@ EXPOSE 80
 COPY start.sh /opt/start.sh
 
 RUN chmod +x /opt/start.sh
+
+COPY Payments /tmp/epay/app/Payments
 
 # 启动Apache服务
 CMD ["/opt/start.sh"]
