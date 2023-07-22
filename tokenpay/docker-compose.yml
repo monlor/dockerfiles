@@ -12,6 +12,7 @@ services:
       - TRON_PRO_API_KEY=xxx
       - TG_USER_ID=111
       - TG_BOT_TOKEN=xxx
+      - API_TOKEN=xxx
     ports:
       - "5000:5000"
     restart: unless-stopped

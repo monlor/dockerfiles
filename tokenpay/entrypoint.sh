@@ -31,7 +31,7 @@ cat > /app/appsettings.json <<-EOF
   },
   "OnlyConfirmed": false, //默认仅查询已确认的数据，如果想要回调更快，可以设置为false
   "NotifyTimeOut": 3, //异步通知超时时间
-  "ApiToken": "666666", //异步通知密钥，请务必修改此密钥为随机字符串，脸滚键盘即可
+  "ApiToken": "${API_TOKEN}", //异步通知密钥，请务必修改此密钥为随机字符串，脸滚键盘即可
   "WebSiteUrl": "${WEB_URL:-http://localhost}", //配置服务器外网域名
   "Telegram": {
     "AdminUserId": ${TG_USER_ID:-1}, // 你的账号ID，如不知道ID，可给https://t.me/EShopFakaBot 发送 /me 获取用户ID
