@@ -14,7 +14,7 @@ services:
       - TG_BOT_TOKEN=xxx
       - API_TOKEN=xxx
     ports:
-      - "5000:5000"
+      - "5001:5001"
     restart: unless-stopped
 
 volumes:

@@ -9,7 +9,7 @@ ARG TARGETARCH
 
 ENV TOKENPAY_VERSION v1.0.7.7
 
-RUN apt update && apt install -y libicu-dev curl unzip
+RUN apt update && apt install -y libicu-dev curl unzip socat
 
 RUN if [ "${TARGETARCH}" = "amd64" ]; then TARGETARCH="x64"; fi && \
     curl -Lo /tmp/tokenpay.zip https://github.com/LightCountry/TokenPay/releases/download/${TOKENPAY_VERSION}/release-linux-${TARGETARCH}.zip && \
