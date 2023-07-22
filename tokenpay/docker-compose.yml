@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  tokenpay:
+    image: monlor/tokenpay
+    container_name: tokenpay
+    volumes:
+      - tokenpay:/data
+    environment:
+      - WEB_URL=https://token-pay.xxx.com
+      - TRON_ADDRESS=xxx
+      - TRON_PRO_API_KEY=xxx
+      - TG_USER_ID=111
+      - TG_BOT_TOKEN=xxx
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+volumes:
+  tokenpay:

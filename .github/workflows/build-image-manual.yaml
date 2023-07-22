@@ -24,6 +24,7 @@ on:
         - vmianqian
         - epay
         - dujiaoka
+        - tokenpay
       tag:
         description: 'Image tag'
 
