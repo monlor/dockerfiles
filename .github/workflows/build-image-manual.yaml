@@ -23,6 +23,7 @@ on:
         - frps
         - vmianqian
         - epay
+        - dujiaoka
       tag:
         description: 'Image tag'
 
