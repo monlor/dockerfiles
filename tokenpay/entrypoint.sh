@@ -21,13 +21,13 @@ cat > /app/appsettings.json <<-EOF
     "USDT": 0,
     "TRX": 0,
     "ETH": 0,
-    "USDC": 0
+    "USDC": 0,
+    "MATIC": 0
   },
   "ExpireTime": 1800, //单位秒
   "UseDynamicAddress": false, //是否使用动态地址，设为false时，与EPUSDT表现类似；设为true时，为每个下单用户分配单独的收款地址
   "Address": { // UseDynamicAddress设为false时在此配置TRON收款地址，EVM可以替代所有ETH系列的收款地址，支持单独配置某条链的收款地址
-    "TRON": [ "${TRON_ADDRESS}" ],
-    "EVM": [ "${EVM_ADDRESS}" ]
+    "TRON": [ "${TRON_ADDRESS}" ]
   },
   "OnlyConfirmed": false, //默认仅查询已确认的数据，如果想要回调更快，可以设置为false
   "NotifyTimeOut": 3, //异步通知超时时间
@@ -37,6 +37,68 @@ cat > /app/appsettings.json <<-EOF
     "AdminUserId": ${TG_USER_ID:-1}, // 你的账号ID，如不知道ID，可给https://t.me/EShopFakaBot 发送 /me 获取用户ID
     "BotToken": "${TG_BOT_TOKEN}" //从https://t.me/BotFather 创建机器人时，会给你BotToken
   }
+}
+EOF
+
+[ -n "${ETH_ADDRESS}" ] && ETH_ENABLED=true
+[ -n "${BSC_ADDRESS}" ] && BSC_ENABLED=true
+[ -n "${POLYGON_ADDRESS}" ] && POLYGON_ENABLED=true
+
+cat > /app/evmchains.json <<-EOF
+{
+  "EVMChains": [
+    {
+      "Enable": ${ETH_ENABLED:-false},
+      "ChainName": "以太坊",
+      "ChainNameEN": "ETH",
+      "BaseCoin": "ETH",
+      "Decimals": 18,
+      "ScanHost": "https://etherscan.io",
+      "ApiHost": "https://api.etherscan.io",
+      "ApiKey": "${ETH_API_KEY}", // 此处申请 https://etherscan.io/myapikey
+      "ERC20Name": "ERC20",
+      "ERC20": [
+        {
+          "Name": "USDT",
+          "ContractAddress": "${ETH_ADDRESS}"
+        }
+      ]
+    },
+    {
+      "Enable": ${BSC_ENABLED:-false},
+      "ChainName": "币安智能链",
+      "ChainNameEN": "BSC",
+      "BaseCoin": "BNB",
+      "Decimals": 18,
+      "ScanHost": "https://www.bscscan.com",
+      "ApiHost": "https://api.bscscan.com",
+      "ApiKey": "${BSC_API_KEY}", // 此处申请 https://bscscan.com/myapikey
+      "ERC20Name": "BEP20",
+      "ERC20": [
+        {
+          "Name": "USDT",
+          "ContractAddress": "${BSC_ADDRESS}"
+        }
+      ]
+    },
+    {
+      "Enable": ${POLYGON_ENABLED:-false},
+      "ChainName": "Polygon",
+      "ChainNameEN": "Polygon",
+      "BaseCoin": "MATIC",
+      "Decimals": 18,
+      "ScanHost": "https://polygonscan.com",
+      "ApiHost": "https://api.polygonscan.com",
+      "ApiKey": "${POLYGON_API_KEY}", // 此处申请 https://polygonscan.com/myapikey
+      "ERC20Name": "ERC20",
+      "ERC20": [
+        {
+          "Name": "USDT",
+          "ContractAddress": "${POLYGON_ADDRESS}"
+        }
+      ]
+    }
+  ]
 }
 EOF
 
