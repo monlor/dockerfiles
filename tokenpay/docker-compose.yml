@@ -10,7 +10,9 @@ services:
       - WEB_URL=https://token-pay.xxx.com
       - TRON_ADDRESS=xxx
       - TRON_PRO_API_KEY=xxx
-      - POLYGON_ADDRESS=xxx
+      - EVM_ADDRESS=xxx
+      - ETH_API_KEY=xxx
+      - BSC_API_KEY=xxx
       - POLYGON_API_KEY=xxx
       - TG_USER_ID=111
       - TG_BOT_TOKEN=xxx

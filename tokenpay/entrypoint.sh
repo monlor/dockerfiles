@@ -27,7 +27,8 @@ cat > /app/appsettings.json <<-EOF
   "ExpireTime": 1800, //单位秒
   "UseDynamicAddress": false, //是否使用动态地址，设为false时，与EPUSDT表现类似；设为true时，为每个下单用户分配单独的收款地址
   "Address": { // UseDynamicAddress设为false时在此配置TRON收款地址，EVM可以替代所有ETH系列的收款地址，支持单独配置某条链的收款地址
-    "TRON": [ "${TRON_ADDRESS}" ]
+    "TRON": [ "${TRON_ADDRESS}" ],
+    "EVM": [ "${EVM_ADDRESS}" ]
   },
   "OnlyConfirmed": false, //默认仅查询已确认的数据，如果想要回调更快，可以设置为false
   "NotifyTimeOut": 3, //异步通知超时时间
@@ -40,9 +41,9 @@ cat > /app/appsettings.json <<-EOF
 }
 EOF
 
-[ -n "${ETH_ADDRESS}" ] && ETH_ENABLED=true
-[ -n "${BSC_ADDRESS}" ] && BSC_ENABLED=true
-[ -n "${POLYGON_ADDRESS}" ] && POLYGON_ENABLED=true
+[ -n "${ETH_API_KEY}" ] && ETH_ENABLED=true
+[ -n "${BSC_API_KEY}" ] && BSC_ENABLED=true
+[ -n "${POLYGON_API_KEY}" ] && POLYGON_ENABLED=true
 
 cat > /app/evmchains.json <<-EOF
 {
@@ -60,7 +61,11 @@ cat > /app/evmchains.json <<-EOF
       "ERC20": [
         {
           "Name": "USDT",
-          "ContractAddress": "${ETH_ADDRESS}"
+          "ContractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        },
+        {
+          "Name": "USDC",
+          "ContractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
         }
       ]
     },
@@ -77,7 +82,11 @@ cat > /app/evmchains.json <<-EOF
       "ERC20": [
         {
           "Name": "USDT",
-          "ContractAddress": "${BSC_ADDRESS}"
+          "ContractAddress": "0x55d398326f99059ff775485246999027b3197955"
+        },
+        {
+          "Name": "USDC",
+          "ContractAddress": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d"
         }
       ]
     },
@@ -94,7 +103,11 @@ cat > /app/evmchains.json <<-EOF
       "ERC20": [
         {
           "Name": "USDT",
-          "ContractAddress": "${POLYGON_ADDRESS}"
+          "ContractAddress": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
+        },
+        {
+          "Name": "USDC",
+          "ContractAddress": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
         }
       ]
     }
