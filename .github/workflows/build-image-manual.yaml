@@ -22,9 +22,6 @@ on:
         - subconverter
         - frps
         - vmianqian
-        - epay
-        - dujiaoka
-        - tokenpay
       tag:
         description: 'Image tag'
 
@@ -128,4 +125,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/${{ env.PROJECT_NAME }}
           readme: "${{ env.PROJECT_NAME }}/README.md"
- 
