@@ -1,9 +1,9 @@
-FROM monlor/ubuntu-base:latest
+FROM monlor/ubuntu-base:main
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.4
+LABEL VERSION 1.0.6
 
-ENV DOCKER_VERSION="20.10.14"
+ARG TARGETARCH
 
 ENV TIDB_TOOLKIT_VERSION=v6.5.0
 
@@ -12,21 +12,17 @@ RUN apt update && apt install -y vim dnsutils net-tools iputils-ping iproute2 te
     ln -sf /usr/bin/python3 /usr/bin/python && \
     pip3 install mycli && \
     # k8s 工具
-    curl -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x /usr/local/bin/kubectl && \
+    curl -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${TARGETARCH}/kubectl" && chmod +x /usr/local/bin/kubectl && \
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && \
-    # 安装 docker 客户端
-    curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz && \
-    tar xzvf docker-${DOCKER_VERSION}.tgz --strip 1 -C /usr/local/bin docker/docker && \
-    rm -rf docker-${DOCKER_VERSION}.tgz && \
     # 安装tidb工具
-    curl -Lo /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz https://download.pingcap.org/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz \
-    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /tmp \
-    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/br-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /usr/bin \
-    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/dumpling-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /usr/bin \
-    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/tidb-lightning-${TIDB_TOOLKIT_VERSION}-linux-amd64.tar.gz -C /usr/bin \
-    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/tidb-lightning-ctl /usr/bin \
-    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/mydumper /usr/bin \
-    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-amd64/etcdctl /usr/bin \
+    curl -Lo /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz https://download.pingcap.org/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz \
+    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz -C /tmp \
+    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/br-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin \
+    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/dumpling-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin \
+    && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/tidb-lightning-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin \
+    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/tidb-lightning-ctl /usr/bin \
+    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/mydumper /usr/bin \
+    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/etcdctl /usr/bin \
     && rm -rf /tmp/tidb-* && \
     # alias
     echo "alias k=kubectl" >> /etc/profile
