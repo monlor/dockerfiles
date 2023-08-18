@@ -21,7 +21,6 @@ RUN apt update && apt install -y vim dnsutils net-tools iputils-ping iproute2 te
     && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/dumpling-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin \
     && tar zxvf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/tidb-lightning-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin \
     && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/tidb-lightning-ctl /usr/bin \
-    && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/mydumper /usr/bin \
     && cp -rf /tmp/tidb-community-toolkit-${TIDB_TOOLKIT_VERSION}-linux-${TARGETARCH}/etcdctl /usr/bin \
     && rm -rf /tmp/tidb-* && \
     # alias
