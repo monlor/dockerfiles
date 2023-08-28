@@ -33,6 +33,11 @@ RUN git clone https://github.com/monlor/Epay-master /tmp/epay && \
 # 开启伪静态支持
 RUN a2enmod rewrite
 
+# 添加 tokenpay 插件
+RUN git clone https://github.com/LightCountry/TokenPay && \
+    cp -a TokenPay/Plugs/epay/* /app/ && \
+    rm -rf TokenPay && rm -rf /app/README.md
+
 # Expose端口
 EXPOSE 80
 
