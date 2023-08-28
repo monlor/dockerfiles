@@ -14,6 +14,8 @@ on:
         type: choice
         options:
         - coder-development
+        - epay
+        - dujiaoka
         - fluentd
         - helmfile
         - opsutils
