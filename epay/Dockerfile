@@ -35,8 +35,10 @@ RUN a2enmod rewrite
 
 # 添加 tokenpay 插件
 RUN git clone https://github.com/LightCountry/TokenPay && \
-    cp -a TokenPay/Plugs/epay/* /app/ && \
-    rm -rf TokenPay && rm -rf /app/README.md
+    cat TokenPay/Plugs/epay/*.sql > /tmp/epay/epay.sql && \
+    rm -rf TokenPay/Plugs/epay/*.sql TokenPay/Plugs/epay/{.git,README.md} && \
+    cp -a TokenPay/Plugs/epay/* /tmp/epay && \
+    rm -rf TokenPay
 
 # Expose端口
 EXPOSE 80
