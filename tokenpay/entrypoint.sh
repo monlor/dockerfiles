@@ -45,7 +45,7 @@ EOF
 [ -n "${BSC_API_KEY}" ] && BSC_ENABLED=true
 [ -n "${POLYGON_API_KEY}" ] && POLYGON_ENABLED=true
 
-cat > /app/evmchains.json <<-EOF
+cat > /app/EVMChains.json <<-EOF
 {
   "EVMChains": [
     {
