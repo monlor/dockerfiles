@@ -24,6 +24,7 @@ on:
         - subconverter
         - frps
         - vmianqian
+        - tokenpay
       tag:
         description: 'Image tag'
 
