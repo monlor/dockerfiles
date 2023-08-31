@@ -25,6 +25,7 @@ on:
         - frps
         - vmianqian
         - tokenpay
+        - n8n
       tag:
         description: 'Image tag'
 
