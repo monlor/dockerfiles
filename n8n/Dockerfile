@@ -5,6 +5,7 @@ LABEL VERSION 1.0.0
 
 USER root
 
-RUN cd /usr/local/lib/node_modules && npm i iconv-lite
+RUN npm i -g pnpm && \
+    cd /usr/local/lib/node_modules && pnpm install iconv-lite
 
 USER node
