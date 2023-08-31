@@ -6,6 +6,6 @@ LABEL VERSION 1.0.0
 USER root
 
 RUN npm i -g pnpm && \
-    cd /usr/local/lib/node_modules && pnpm install iconv-lite
+    cd /usr/local/lib/node_modules && pnpm install iconv-lite jschardet
 
 USER node
