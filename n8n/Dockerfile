@@ -8,6 +8,6 @@ ENV NODE_FUNCTION_ALLOW_EXTERNAL=*
 USER root
 
 RUN npm i -g pnpm && \
-    cd /usr/local/lib/node_modules && pnpm install iconv-lite jschardet
+    cd /usr/local/lib/node_modules && pnpm install iconv-lite jschardet fast-csv
 
 USER node
