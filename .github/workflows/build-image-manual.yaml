@@ -26,6 +26,7 @@ on:
         - vmianqian
         - tokenpay
         - n8n
+        - enterprise-base
       tag:
         description: 'Image tag'
 
