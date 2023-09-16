@@ -18,4 +18,4 @@ USER coder
 RUN code-server --install-extension eamodio.gitlens formulahendry.auto-close-tag GitHub.copilot GitHub.github-vscode-theme github.vscode-github-actions GitHub.vscode-pull-request-github lizebang.bash-extension-pack yzhang.markdown-all-in-one
 
 RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
-    cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
+    cd /home/coder/.config/coderv2/dotfiles && ASDF=false ./install.sh 
