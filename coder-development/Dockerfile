@@ -15,7 +15,14 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 USER coder
 
-RUN code-server --install-extension eamodio.gitlens formulahendry.auto-close-tag GitHub.copilot GitHub.github-vscode-theme github.vscode-github-actions GitHub.vscode-pull-request-github lizebang.bash-extension-pack yzhang.markdown-all-in-one
+RUN code-server --install-extension eamodio.gitlens && \
+    code-server --install-extension formulahendry.auto-close-tag && \
+    code-server --install-extension GitHub.copilot && \
+    code-server --install-extension GitHub.github-vscode-theme && \
+    code-server --install-extension github.vscode-github-actions && \
+    code-server --install-extension GitHub.vscode-pull-request-github && \
+    code-server --install-extension lizebang.bash-extension-pack && \
+    code-server --install-extension yzhang.markdown-all-in-one
 
 RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
     cd /home/coder/.config/coderv2/dotfiles && ASDF=false ./install.sh 
