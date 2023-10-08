@@ -25,4 +25,4 @@ RUN code-server --install-extension eamodio.gitlens && \
     code-server --install-extension yzhang.markdown-all-in-one
 
 RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
-    cd /home/coder/.config/coderv2/dotfiles && ASDF=false ./install.sh 
+    cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
