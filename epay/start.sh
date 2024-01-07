@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -d /tmp/epay ]; then
     echo "更新epay文件..."
     if [ -f /var/www/html/install/install.lock ]; then
@@ -7,10 +9,7 @@ if [ -d /tmp/epay ]; then
         cp -rf /var/www/html/install/install.lock /tmp/epay/install
         cp -rf /var/www/html/config.php /tmp/epay/config.php
     fi
-    rm -rf /var/www/html/{*,.*} &> /dev/null
-    mv /tmp/epay/{*,.*} /var/www/html &> /dev/null
-    chmod 777 -R /var/www/html
+    rsync -av --delete /var/www/html/ /tmp/epay/ &> /dev/null
 fi
-
 
 apache2-foreground

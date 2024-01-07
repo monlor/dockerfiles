@@ -2,7 +2,7 @@
 FROM php:7.3-apache
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.0
+LABEL VERSION 1.0.1
 
 ENV TZ Asia/Shanghai
 
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libgdiplus \
     openssl \
+    rsync \
     git && \
     printf '\n' | pecl install mcrypt && \
     docker-php-ext-enable mcrypt && \
@@ -28,6 +29,7 @@ WORKDIR /var/www/html
 
 # 下载v免签服务源代码并解压到镜像中
 RUN git clone https://github.com/monlor/Epay-master /tmp/epay && \
+    chmod -R 777 /tmp/epay && \
     rm -rf /tmp/epay/.git
 
 # 开启伪静态支持
