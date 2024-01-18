@@ -9,7 +9,8 @@ if [ -d /tmp/epay ]; then
         cp -rf /var/www/html/install/install.lock /tmp/epay/install
         cp -rf /var/www/html/config.php /tmp/epay/config.php
     fi
-    rsync -av --delete /var/www/html/ /tmp/epay/ &> /dev/null
+    rsync -av --delete /tmp/epay/ /var/www/html/ &> /dev/null
+    rm -rf /tmp/epay
 fi
 
 apache2-foreground
