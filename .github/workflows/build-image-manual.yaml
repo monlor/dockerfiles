@@ -27,6 +27,7 @@ on:
         - tokenpay
         - n8n
         - enterprise-base
+        - forwardpanel
       tag:
         description: 'Image tag'
 
