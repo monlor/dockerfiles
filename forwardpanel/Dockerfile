@@ -3,7 +3,7 @@ FROM beginner202010/forwordpanel:1.0.7-SNAPSHOT as source
 FROM amazoncorretto:8u402
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.1
+LABEL VERSION 1.0.2
 
 ENV LANG=C.UTF-8
 
