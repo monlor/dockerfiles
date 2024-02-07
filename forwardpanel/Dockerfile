@@ -1,10 +1,20 @@
-FROM beginner202010/forwordpanel:1.0.7-SNAPSHOT
+FROM beginner202010/forwordpanel:1.0.7-SNAPSHOT as source
+
+FROM amazoncorretto:8u402
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.0
+LABEL VERSION 1.0.1
+
+ENV LANG=C.UTF-8
 
 VOLUME /data
 
-COPY application.properties /
+WORKDIR /app
 
-RUN mkdir /data /config && mv /forward_db* /data 
+COPY application.properties /app/
+COPY --from=source /forward_db* /data/
+COPY --from=source app.jar /app/
+
+RUN mkdir /config
+
+Entrypoint [ "/usr/bin/java", "-jar", "/app/app.jar" ]
