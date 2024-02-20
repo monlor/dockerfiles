@@ -1,4 +1,4 @@
-FROM tindy2013/subconverter:v0.8.1
+FROM tindy2013/subconverter:latest
 
 LABEL MAINTAINER me@monlor.com
 LABEL VERSION 1.2.1
