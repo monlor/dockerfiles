@@ -1,7 +1,7 @@
-FROM tindy2013/subconverter
+FROM tindy2013/subconverter:v0.8.1
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.2.0
+LABEL VERSION 1.2.1
 
 WORKDIR /base
 RUN apk add tzdata && \
