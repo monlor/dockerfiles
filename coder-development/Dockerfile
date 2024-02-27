@@ -3,11 +3,14 @@ FROM codercom/enterprise-base:ubuntu
 LABEL MAINTAINER me@monlor.com
 LABEL VERSION 1.0.1
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 ENV LANG='C.UTF-8' LC_ALL='C.UTF-8'
+ENV TZ=Asia/Shanghai
 
 USER root
 
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' > /etc/timezone && \
+RUN apt install -y tzdata && \
     # 修改用户shell
     usermod -s /bin/zsh coder 
 
