@@ -17,16 +17,16 @@ RUN apt update && apt install -y tzdata && \
 
 USER coder
 
-RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --version 4.11.0
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.11.0
 
 RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
     cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
 
-RUN code-server --install-extension eamodio.gitlens && \
-    code-server --install-extension formulahendry.auto-close-tag && \
-    code-server --install-extension GitHub.copilot && \
-    code-server --install-extension GitHub.github-vscode-theme && \
-    code-server --install-extension github.vscode-github-actions && \
-    code-server --install-extension GitHub.vscode-pull-request-github && \
-    code-server --install-extension lizebang.bash-extension-pack && \
-    code-server --install-extension yzhang.markdown-all-in-one
+RUN /tmp/code-server/code-server --install-extension eamodio.gitlens && \
+    /tmp/code-server/code-server --install-extension formulahendry.auto-close-tag && \
+    /tmp/code-server/code-server --install-extension GitHub.copilot && \
+    /tmp/code-server/code-server --install-extension GitHub.github-vscode-theme && \
+    /tmp/code-server/code-server --install-extension github.vscode-github-actions && \
+    /tmp/code-server/code-server --install-extension GitHub.vscode-pull-request-github && \
+    /tmp/code-server/code-server --install-extension lizebang.bash-extension-pack && \
+    /tmp/code-server/code-server --install-extension yzhang.markdown-all-in-one
