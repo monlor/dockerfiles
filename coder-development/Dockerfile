@@ -17,7 +17,7 @@ RUN apt update && apt install -y tzdata && \
 
 USER coder
 
-RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.11.0
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --version 4.11.0
 
 RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
     cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
