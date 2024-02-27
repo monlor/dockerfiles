@@ -10,7 +10,8 @@ ENV TZ=Asia/Shanghai
 
 USER root
 
-RUN apt install -y tzdata && \
+RUN apt update && apt install -y tzdata && \
+    rm -rf /var/lib/apt/lists/* && \
     # 修改用户shell
     usermod -s /bin/zsh coder 
 
