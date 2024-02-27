@@ -17,6 +17,10 @@ RUN apt update && apt install -y tzdata && \
 
 USER coder
 
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.11.0
+
+RUN coder dotfiles -y https://github.com/monlor/dotfiles
+
 RUN code-server --install-extension eamodio.gitlens && \
     code-server --install-extension formulahendry.auto-close-tag && \
     code-server --install-extension GitHub.copilot && \
@@ -26,5 +30,3 @@ RUN code-server --install-extension eamodio.gitlens && \
     code-server --install-extension lizebang.bash-extension-pack && \
     code-server --install-extension yzhang.markdown-all-in-one
 
-RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
-    cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
