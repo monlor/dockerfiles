@@ -150,8 +150,8 @@ advanced:
   max_allowed_download_size: 0
   enable_cache: true
   cache_subscription: 60
-  cache_config: 300
-  cache_ruleset: 21600
+  cache_config: 60
+  cache_ruleset: 60
   script_clean_context: true
   async_fetch_ruleset: false
   skip_failed_links: false
