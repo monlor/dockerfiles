@@ -6,6 +6,7 @@ set -e
 if [ "$(ls -A /var/www/html | wc -l)" -lt 2 ]; then
     echo "安装acg-faka程序..."
     cp -rf /tmp/acg-faka-main/. /var/www/html
+    chown www-data:www-data -R /var/www/html
 fi
 
 apache2-foreground
