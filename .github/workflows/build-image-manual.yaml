@@ -27,6 +27,7 @@ on:
         - tokenpay
         - n8n
         - forwardpanel
+        - acg-faka
       tag:
         description: 'Image tag'
 
