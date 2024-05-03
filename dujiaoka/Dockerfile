@@ -8,3 +8,7 @@ LABEL VERSION 2.1.0
 #     chown application:application -R TokenPay-master && \
 #     cp -a TokenPay-master/Plugs/dujiaoka/* /dujiaoka/ && \
 #     rm -rf master.zip TokenPay-master
+
+COPY entrypoint.sh /entrypoint.sh
+
+Entrypoint [ "bash", "/entrypoint.sh" ]
