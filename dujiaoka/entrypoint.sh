@@ -28,4 +28,4 @@ fi
 
 ln -sf /dujiaoka/storage/.env /dujiaoka/.env
 
-/opt/start.sh
+/start.sh
