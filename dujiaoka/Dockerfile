@@ -1,7 +1,7 @@
 FROM ghcr.io/apocalypsor/dujiaoka:latest
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 2.1.2
+LABEL VERSION 2.1.3
 
 RUN curl -#LO https://github.com/LightCountry/TokenPay/archive/refs/heads/master.zip && \
     unzip master.zip && \
