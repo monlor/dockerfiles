@@ -1,7 +1,7 @@
 FROM debian:buster
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.1
+LABEL VERSION 1.0.2
 
 ENV TZ Asia/Shanghai
 

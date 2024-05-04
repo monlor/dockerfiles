@@ -19,7 +19,6 @@ cat > /app/appsettings.json <<-EOF
   "BaseCurrency": "${BASE_CURRENCY:-CNY}", //默认货币，支持 CNY、USD、EUR、GBP、AUD、HKD、TWD、SGD
   "Rate": { //汇率 设置0将使用自动汇率
     "USDT": 0,
-    "TRX": 0,
     "ETH": 0,
     "USDC": 0,
     "MATIC": 0
