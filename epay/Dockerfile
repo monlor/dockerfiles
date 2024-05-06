@@ -45,6 +45,8 @@ RUN git clone https://github.com/LightCountry/TokenPay && \
 # Expose端口
 EXPOSE 80
 
+ADD plugins /tmp/epay/plugins
+
 COPY start.sh /opt/start.sh
 
 RUN chmod +x /opt/start.sh
