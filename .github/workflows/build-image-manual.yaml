@@ -29,6 +29,7 @@ on:
         - forwardpanel
         - acg-faka
         - epusdt
+        - bepusdt
       tag:
         description: 'Image tag'
 
