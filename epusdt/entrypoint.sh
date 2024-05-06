@@ -24,7 +24,7 @@ max_backups=3
 
 # mysql配置
 mysql_host=${MYSQL_HOST}
-mysql_port=${MYSQL_PORT:-3306}
+mysql_port=${MYSQL_PORT:=3306}
 mysql_user=${MYSQL_USER}
 mysql_passwd=${MYSQL_PASSWD}
 mysql_database=${MYSQL_DB}
@@ -64,5 +64,64 @@ order_expiration_time=${ORDER_EXPIRATION_TIME:-10}
 #强制汇率(设置此参数后每笔交易将按照此汇率计算，例如:6.4)
 forced_usdt_rate=
 EOF
+
+
+# 自动创建表
+exec_sql() {
+    mysql -h "${MYSQL_HOST}" -P "${MYSQL_PORT}" -u "${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "USE ${MYSQL_DB}; $1"
+}
+
+table_exists() {
+    table_name="$1"
+
+    exec_sql "SHOW TABLES LIKE '$table_name';" | grep "$table_name" >/dev/null
+}
+
+
+
+# 创建orders表
+if ! table_exists "orders"; then
+    exec_sql "
+        CREATE TABLE orders (
+            id                   INT AUTO_INCREMENT PRIMARY KEY,
+            trade_id             VARCHAR(32) NOT NULL COMMENT 'epusdt订单号',
+            order_id             VARCHAR(32) NOT NULL COMMENT '客户交易id',
+            block_transaction_id VARCHAR(128) NULL COMMENT '区块唯一编号',
+            actual_amount        DECIMAL(19, 4) NOT NULL COMMENT '订单实际需要支付的金额，保留4位小数',
+            amount               DECIMAL(19, 4) NOT NULL COMMENT '订单金额，保留4位小数',
+            token                VARCHAR(50) NOT NULL COMMENT '所属钱包地址',
+            status               INT DEFAULT 1 NOT NULL COMMENT '1：等待支付，2：支付成功，3：已过期',
+            notify_url           VARCHAR(128) NOT NULL COMMENT '异步回调地址',
+            redirect_url         VARCHAR(128) NULL COMMENT '同步回调地址',
+            callback_num         INT DEFAULT 0 NULL COMMENT '回调次数',
+            callback_confirm     INT DEFAULT 2 NULL COMMENT '回调是否已确认？ 1是 2否',
+            created_at           TIMESTAMP NULL,
+            updated_at           TIMESTAMP NULL,
+            deleted_at           TIMESTAMP NULL,
+            CONSTRAINT orders_order_id_uindex UNIQUE (order_id),
+            CONSTRAINT orders_trade_id_uindex UNIQUE (trade_id)
+        );"
+
+    echo "Table 'orders' created."
+else
+    echo "Table 'orders' already exists."
+fi
+
+# 创建wallet_address表
+if ! table_exists "wallet_address"; then
+    exec_sql "
+        CREATE TABLE wallet_address (
+            id         INT AUTO_INCREMENT PRIMARY KEY,
+            token      VARCHAR(50) NOT NULL COMMENT '钱包token',
+            status     INT DEFAULT 1 NOT NULL COMMENT '1:启用 2:禁用',
+            created_at TIMESTAMP NULL,
+            updated_at TIMESTAMP NULL,
+            deleted_at TIMESTAMP NULL
+        ) COMMENT '钱包表';"
+
+    echo "Table 'wallet_address' created."
+else
+    echo "Table 'wallet_address' already exists."
+fi
 
 /usdt/epusdt http start
