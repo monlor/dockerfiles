@@ -4,8 +4,7 @@ ENV BEPUSDT_VERSION=v1.9.21
 
 ENV GO111MODULE=on
 WORKDIR /go/release
-ADD . .
-COPY https://github.com/v03413/bepusdt/archive/refs/tags/${BEPUSDT_VERSION}.tar.gz .
+ADD https://github.com/v03413/bepusdt/archive/refs/tags/${BEPUSDT_VERSION}.tar.gz .
 RUN set -x \
     && tar zxvf ${BEPUSDT_VERSION}.tar.gz --strip-components=1 \
     && CGO_ENABLED=1 go build -trimpath -ldflags="-linkmode external -extldflags -static -s -w -buildid=" -o bepusdt ./main
