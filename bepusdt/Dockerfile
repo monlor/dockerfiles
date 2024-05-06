@@ -20,8 +20,8 @@ ENV TZ=Asia/Shanghai
 
 COPY --from=builder /go/release/bepusdt /runtime/bepusdt
 
-ADD --from=builder /go/release/templates /runtime/templates
-ADD --from=builder /go/release/static /runtime/static
+COPY --from=builder /go/release/templates /runtime/templates
+COPY --from=builder /go/release/static /runtime/static
 
 RUN apt-get update && apt-get install -y --no-install-recommends tzdata ca-certificates libc6 libgcc1 libstdc++6 \
     && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
