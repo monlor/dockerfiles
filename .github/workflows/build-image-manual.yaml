@@ -30,6 +30,7 @@ on:
         - acg-faka
         - epusdt
         - bepusdt
+        - http-dump
       tag:
         description: 'Image tag'
 
