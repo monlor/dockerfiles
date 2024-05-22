@@ -1,6 +1,6 @@
 FROM golang:1.22.2 AS builder
 
-ENV BEPUSDT_VERSION=v1.9.21
+ENV BEPUSDT_VERSION=v1.9.22
 
 ENV GO111MODULE=on
 WORKDIR /go/release
@@ -12,7 +12,7 @@ RUN set -x \
 FROM debian:latest
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.0
+LABEL VERSION 1.0.1
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NOWARNINGS="yes"
