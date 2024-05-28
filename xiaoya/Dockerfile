@@ -15,6 +15,4 @@ RUN apk add --no-cache curl bash tzdata && \
 
 ADD https://raw.githubusercontent.com/DDS-Derek/xiaoya-alist/master/all_in_one.sh /usr/local/bin/xiaoya.sh
 
-COPY ./start.sh /start.sh
-
-RUN chmod +x /usr/local/bin/xiaoya.sh /start.sh
+RUN chmod +x /usr/local/bin/xiaoya.sh
