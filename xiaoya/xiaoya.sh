@@ -1004,7 +1004,7 @@ function pull_run_glue() {
     fi
 
     if [ -n "${extra_parameters}" ]; then
-        docker run -it \
+        id=$(docker run -d \
             --security-opt seccomp=unconfined \
             --rm \
             --net=host \
@@ -1013,9 +1013,10 @@ function pull_run_glue() {
             ${extra_parameters} \
             -e LANG=C.UTF-8 \
             xiaoyaliu/glue:latest \
-            "${@}"
+            "${@}")
+        docker logs -f $id
     else
-        docker run -it \
+        id=$(docker run -it \
             --security-opt seccomp=unconfined \
             --rm \
             --net=host \
@@ -1023,7 +1024,8 @@ function pull_run_glue() {
             -v "${CONFIG_DIR}:/etc/xiaoya" \
             -e LANG=C.UTF-8 \
             xiaoyaliu/glue:latest \
-            "${@}"
+            "${@}")
+        docker logs -f $id
     fi
 
 }
