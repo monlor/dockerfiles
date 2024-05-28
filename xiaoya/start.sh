@@ -14,7 +14,8 @@ if [ ${#ALIYUN_TOKEN} -ne 32 ]; then
     echo -e "启动停止，请参考指南配置文件\nhttps://alist.nn.ci/zh/guide/drivers/aliyundrive.html \n"
     exit
 else	
-    echo ${ALIYUN_TOKEN} > /data/mytoken.txt
+    echo "添加阿里云盘 Token..."
+    echo "${ALIYUN_TOKEN}" > /data/mytoken.txt
 fi
 
 # 生成配置，阿里云open token
@@ -23,7 +24,8 @@ if [[ ${#ALIYUN_OPEN_TOKEN} -le 334 ]]; then
     echo -e "安装停止，请参考指南配置文件\nhttps://alist.nn.ci/zh/guide/drivers/aliyundrive_open.html \n"
     exit
 else
-    echo ${ALIYUN_OPEN_TOKEN} > /data/myopentoken.txt
+    echo "添加阿里云盘 Open Token..."
+    echo "${ALIYUN_OPEN_TOKEN}" > /data/myopentoken.txt
 fi
 
 # 生成配置，阿里云转存目录folder_id
@@ -32,13 +34,14 @@ if [ ${#ALIYUN_FOLDER_ID} -ne 40 ]; then
     echo -e "安装停止，请转存以下目录到你的网盘，并获取该文件夹的folder_id\nhttps://www.aliyundrive.com/s/rP9gP3h9asE \n"
     exit
 else
-    echo ${ALIYUN_FOLDER_ID} > /data/temp_transfer_folder_id.txt
+    echo "添加阿里云盘 folder_id..."
+    echo "${ALIYUN_FOLDER_ID}" > /data/temp_transfer_folder_id.txt
 fi
 
 if [ "${CRONTAB_ENABLE:=false}" = "true" ]; then
     echo "启动定时任务..."
-    echo "*/15 0,15-23 * * * bash /update_data.sh" | crontab -
+    echo "0 3 * * * /updateall " | crontab -
     crond
 fi
 
-bash -x /entrypoint.sh
+exec /entrypoint.sh /opt/alist/alist server --no-prefix
