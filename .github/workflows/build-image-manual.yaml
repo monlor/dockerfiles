@@ -32,6 +32,7 @@ on:
         - bepusdt
         - http-dump
         - kubectl
+        - xiaoya
       tag:
         description: 'Image tag'
 
