@@ -16,4 +16,10 @@ docker run -d -p 5678:80 -p 2345:2345 -p 2346:2346 --restart=unless-stopped --na
 
 `ALIYUN_FOLDER_ID`: 阿里云小雅文件夹id，转存以下文件到你的云盘，获取文件夹id，共享链接：https://www.aliyundrive.com/s/rP9gP3h9asE
 
-`CRONTAB_ENABLE`: 是否开启定时更新数据的任务，true/false
+`EMBY_ENABLE`: 安装emby，需要下载元数据，准备100G
+
+`JELLYFIN_ENABLE`: 安装jellyfin，需要下载元数据，准备100G
+
+## 参考
+
+https://raw.githubusercontent.com/DDS-Derek/xiaoya-alist/master/all_in_one.sh
