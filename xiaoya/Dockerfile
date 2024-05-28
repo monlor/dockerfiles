@@ -1,13 +1,23 @@
-FROM xiaoyaliu/alist:latest
+FROM docker:dind
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.0
+LABEL VERSION 2.0.0
 
-EXPOSE 80 2345 2346
+EXPOSE 5678 2345 2346
 
-VOLUME /data
+VOLUME /etc/xiaoya /opt/media
+
+RUN apk add --no-cache curl bash tzdata && \
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone && \
+    apk del tzdata && \
+    rm -rf /var/cache/apk/*
+
+COPY ./xiaoya.sh /usr/local/bin/xiaoya.sh
 
 COPY ./start.sh /start.sh
+
+RUN chmod +x /usr/local/bin/xiaoya.sh /start.sh
 
 ENTRYPOINT [ "bash", "/start.sh" ]
 
