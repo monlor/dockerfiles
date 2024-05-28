@@ -1,7 +1,7 @@
 FROM docker:dind
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 2.0.1
+LABEL VERSION 2.0.2
 
 EXPOSE 5678 2345 2346
 
@@ -13,12 +13,8 @@ RUN apk add --no-cache curl bash tzdata && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*
 
-COPY ./xiaoya.sh /usr/local/bin/xiaoya.sh
+ADD https://raw.githubusercontent.com/DDS-Derek/xiaoya-alist/master/all_in_one.sh /usr/local/bin/xiaoya.sh
 
 COPY ./start.sh /start.sh
 
 RUN chmod +x /usr/local/bin/xiaoya.sh /start.sh
-
-ENTRYPOINT [ "bash", "/start.sh" ]
-
-CMD []
