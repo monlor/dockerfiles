@@ -32,7 +32,7 @@ on:
         - bepusdt
         - http-dump
         - kubectl
-        - xiaoya
+        - radiance-bot
       tag:
         description: 'Image tag'
 
