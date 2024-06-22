@@ -1,5 +1,8 @@
 FROM amazoncorretto:17-alpine
 
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 1.0.0
+
 WORKDIR /app
 
 RUN apk add --no-cache curl bash
