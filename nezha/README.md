@@ -18,8 +18,6 @@ docker run -d --name nezha -v your_data:/dashboard/data -p 8080:80 -p 5555:5555 
 * `OAUTH_CLIENT_ID`: oauth客户端id
 * `OAUTH_CLIENT_SECRET`: oauth客户端密钥
 * `OAUTH_ENDPOINT`: gitea自建需要
-* `SITE_BRAND`: 网站标题
-* `SITE_THEME`: 网站主题
 
 ## 创建github认证
 
