@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.1
+LABEL VERSION 1.0.2
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -17,7 +17,7 @@ RUN apt update && apt install -y tzdata && \
 
 USER coder
 
-RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.11.0
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.90.3
 
 RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
     cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
