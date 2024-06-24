@@ -33,6 +33,7 @@ on:
         - http-dump
         - kubectl
         - radiance-bot
+        - nezha
       tag:
         description: 'Image tag'
 
