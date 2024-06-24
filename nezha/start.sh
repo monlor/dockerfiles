@@ -2,41 +2,44 @@
 
 set -eu
 
-cat > /dashboard/data/config.yaml <<-EOF
-debug: ${DEBUG:-false}
-httpport: ${HTTP_PORT:-80}
-language: ${LANGUAGE:-zh-CN}
-grpcport: ${GRPC_PORT:-5555}
-oauth2:
-  type: "${OAUTH_TYPE:-github}" #Oauth2 登录接入类型，github/gitlab/jihulab/gitee/gitea
-  admin: "${OAUTH_ADMIN}" #管理员列表，半角逗号隔开
-  clientid: "${OAUTH_CLIENT_ID}" # 在 https://github.com/settings/developers 创建，无需审核 Callback 填 http(s)://域名或IP/oauth2/callback
-  clientsecret: "${OAUTH_CLIENT_SECRET}"
-  endpoint: "${OAUTH_ENDPOINT:-}" # 如gitea自建需要设置
-site:
-  brand: "${SITE_BRAND:-Nezha}"
-  cookiename: "${SITE_COOKIE_NAME:-nezha-dashboard}" #浏览器 Cookie 字段名，可不改
-  theme: "${SITE_THEME:-default}" 
+CONFIG_FILE=/dashboard/data/config.yaml
+
+if [ ! -f /dashboard/data/config.yaml ]; then
+    cp -rf /dashboard/config.yaml ${CONFIG_FILE}
+    # language
+    sed -i "s/^language:.*$/language: \"zh-CN\"/" ${CONFIG_FILE}
+    # brand
+    sed -i "s/^  brand:.*$/  brand: \"Nezha Monitor\"/" ${CONFIG_FILE}
+fi
+
+sed -i "s/^debug:.*$/debug: ${DEBUG:-false}/" ${CONFIG_FILE}
+sed -i "s/^httpport:.*$/httpport: ${HTTP_PORT:-80}/" ${CONFIG_FILE}
+# grpc
+sed -i "s/^grpcport:.*$/grpcport: ${GRPC_PORT:-5555}/" ${CONFIG_FILE}
+# oauth2
+sed -i "s/^  type:.*$/  type: \"${OAUTH_TYPE:-github}\"/" ${CONFIG_FILE}
+sed -i "s/^  admin:.*$/  admin: \"${OAUTH_ADMIN}\"/" ${CONFIG_FILE}
+sed -i "s/^  clientid:.*$/  clientid: \"${OAUTH_CLIENT_ID}\"/" ${CONFIG_FILE}
+sed -i "s/^  clientsecret:.*$/  clientsecret: \"${OAUTH_CLIENT_SECRET}\"/" ${CONFIG_FILE}
+sed -i "s/^  endpoint:.*$/  endpoint: \"${OAUTH_ENDPOINT:-}\"/" ${CONFIG_FILE}
+# cookiename
+sed -i "s/^  cookiename:.*$/  cookiename: \"${SITE_COOKIE_NAME:-nezha-dashboard}\"/" ${CONFIG_FILE}
+# ddns https://nezha.wiki/guide/servers.html#%E5%8D%95%E9%85%8D%E7%BD%AE
+# webhook, cloudflare, tencentcloud
+sed -i '/^ddns:/,$d' ${CONFIG_FILE}
+cat >> ${CONFIG_FILE} <<-EOF
 ddns:
-  enable: false
-  provider: "webhook" # 如需使用多配置功能，请把此项留空
-  accessid: ""
-  accesssecret: ""
-  webhookmethod: ""
-  webhookurl: ""
-  webhookrequestbody: ""
-  webhookheaders: ""
-  maxretries: 3
-  profiles:
-    example:
-      provider: ""
-      accessid: ""
-      accesssecret: ""
-      webhookmethod: ""
-      webhookurl: ""
-      webhookrequestbody: ""
-      webhookheaders: ""    
+  enable: ${DDNS_ENABLED:-false}
+  provider: ${DDNS_PROVIDER:-cloudflare}
+  accessid: ${DDNS_ACCESS_ID:-}
+  accesssecret: ${DDNS_ACCESS_SECRET:-}
+  webhookmethod: ${DDNS_WEBHOOK_METHOD:-POST}
+  webhookurl: ${DDNS_WEBHOOK_URL:-}
+  webhookrequestbody: ${DDNS_WEBHOOK_REQUEST_BODY:-}
+  webhookheaders: ${DDNS_WEBHOOK_HEADERS:-}
+  maxretries: ${DDNS_MAX_RETRIES:-3}
 EOF
+
 
 if [ ! -d /dashboard/resource/template ]; then
   mkdir -p /dashboard/resource/template
