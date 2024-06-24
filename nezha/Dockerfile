@@ -14,8 +14,6 @@ VOLUME /dashboard/data
 
 WORKDIR /dashboard
 
-ADD https://raw.githubusercontent.com/naiba/nezha/$NEZHA_VERSION/script/config.yaml .
-
 COPY --chmod=755 ./start.sh /start.sh
 
 ENTRYPOINT ["/start.sh"]
