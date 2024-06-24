@@ -4,7 +4,7 @@ set -eu
 
 CONFIG_FILE=/dashboard/data/config.yaml
 
-if [ ! -f /dashboard/data/config.yaml ]; then
+if [ ! -f ${CONFIG_FILE} ]; then
     cat > ${CONFIG_FILE} <<-EOF
 AvgPingCount: 2
 Cover: 0
