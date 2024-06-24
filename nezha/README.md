@@ -2,7 +2,7 @@
 
 修改nezha的docker镜像
 
-## 安装
+## 部署
 
 ```bash
 docker run -d --name nezha monlor/nezha
@@ -27,6 +27,15 @@ https://github.com/settings/developers
 * `Homepage URL`: 填写面板的访问域名，如："http://cdn.example.com"
 * `Authorization callback URL`: 填写回调地址，如："http://cdn.example.com/oauth2/callback"
 
+## 部署agent
+
+https://nezha.wiki/guide/agent.html
+
+**在Linux中部署**
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh)"
+```
 
 ## 来源
 
