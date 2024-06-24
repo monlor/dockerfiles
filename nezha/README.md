@@ -5,7 +5,7 @@
 ## 部署
 
 ```bash
-docker run -d --name nezha monlor/nezha
+docker run -d --name nezha -v your_data:/dashboard/data -p 8080:80 -p 5555:5555 monlor/nezha
 ```
 
 ## 环境变量
