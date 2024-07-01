@@ -9,7 +9,7 @@ ARG NGINX_VERSION=1.27.0
 
 WORKDIR /var/www/imagesweserv
 
-RUN dnf install -y unzip && dnf clean all \
+RUN dnf install -y unzip && dnf clean all && \
     curl https://github.com/weserv/images/archive/refs/heads/5.x.zip -o images.zip && \
     unzip images.zip && \
     cp -a images-5.x/* /var/www/imagesweserv/ && \
