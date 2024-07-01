@@ -18,7 +18,10 @@ sed -i "s/^REDIS_HOST=.*/REDIS_HOST=${REDIS_HOST}/g" /dujiaoka/storage/.env
 sed -i "s/^REDIS_PASSWORD=.*/REDIS_PASSWORD=${REDIS_PASSWORD}/g" /dujiaoka/storage/.env
 sed -i "s/^REDIS_PORT=.*/REDIS_PORT=${REDIS_PORT:-6379}/g" /dujiaoka/storage/.env
 
+# file redis
 sed -i "s/^CACHE_DRIVER=.*/CACHE_DRIVER=${CACHE_DRIVER:-redis}/g" /dujiaoka/storage/.env
+# sync redis
+sed -i "s/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION=${QUEUE_CONNECTION:-redis}/g" /dujiaoka/storage/.env
 
 if [ ! -f /dujiaoka/storage/.install.lock ]; then
     echo "启用初始化安装模式..."
