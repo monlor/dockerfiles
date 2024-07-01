@@ -1,7 +1,7 @@
 FROM rockylinux:9
 
-LABEL MAINTAINER=me@monlor.com
-LABEL VERSION=1.0.0
+LABEL MAINTAINER me@monlor.com
+LABEL VERSION 1.0.0
 
 LABEL source_maintainer="Kleis Auke Wolthuizen <info@kleisauke.nl>"
 
