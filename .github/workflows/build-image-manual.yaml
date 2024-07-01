@@ -34,7 +34,7 @@ on:
         - kubectl
         - radiance-bot
         - nezha
-        - webserv
+        - weserv
       tag:
         description: 'Image tag'
 
