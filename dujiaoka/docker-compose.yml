@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: dujiaoka
+      MYSQL_USER: dujiaoka
+      MYSQL_PASSWORD: dujiaoka
+      MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - default
+  dujiaoka:
+    image: monlor/dujiaoka
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: dujiaoka
+      DB_USERNAME: dujiaoka
+      DB_PASSWORD: dujiaoka
+    volumes:
+      - dujiaoka:/dujiaoka/storage
+    ports:
+      - 80:80
+    networks:
+      - default
+
+volumes:
+  mysql-data:
+  dujiaoka:
+
+networks:
+  default:
