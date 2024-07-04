@@ -24,7 +24,7 @@ if [ -n "${MEDIA_DOMAIN_URL:=}" ]; then
   done
 else
   echo "Using domain list from /tmp/media.txt"
-  grep -h -v '^#' -v '^$' /tmp/media.txt | while read -r domain; do
+  grep -h -v '^#' /tmp/media.txt | grep -v '^$' | while read -r domain; do
     echo "address=/$domain/${SNI_IP}" >> "${CONFIG_FILE}"
   done
 fi
