@@ -5,7 +5,7 @@ LABEL VERSION 1.1.0
 
 COPY --chmod=0655 entrypoint.sh /entrypoint.sh
 
-COPY Epay.php /www/app/Payments/Epay.php
+COPY EPay.php /www/app/Payments/EPay.php
 
 ENTRYPOINT ["/entrypoint.sh"]
 
