@@ -37,6 +37,7 @@ on:
         - weserv
         - media-unlock
         - sniproxy
+        - xboard
       tag:
         description: 'Image tag'
 
