@@ -35,6 +35,8 @@ on:
         - radiance-bot
         - nezha
         - weserv
+        - media-unlock
+        - sniproxy
       tag:
         description: 'Image tag'
 
