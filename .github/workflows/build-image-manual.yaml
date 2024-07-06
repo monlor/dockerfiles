@@ -16,7 +16,6 @@ on:
         - coder-development
         - epay
         - dujiaoka
-        - fluentd
         - helmfile
         - opsutils
         - tidb-toolkit
@@ -26,8 +25,6 @@ on:
         - vmianqian
         - tokenpay
         - n8n
-        - forwardpanel
-        - acg-faka
         - epusdt
         - bepusdt
         - http-dump
@@ -38,6 +35,7 @@ on:
         - media-unlock
         - sniproxy
         - xboard
+        - ws-scrapy
       tag:
         description: 'Image tag'
 

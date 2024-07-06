@@ -3,7 +3,7 @@ FROM rockylinux:9
 LABEL MAINTAINER me@monlor.com
 LABEL VERSION 1.0.0
 
-LABEL source_maintainer="Kleis Auke Wolthuizen <info@kleisauke.nl>"
+LABEL ORIGINAL_AUTHOR="Kleis Auke Wolthuizen <info@kleisauke.nl>"
 
 ARG NGINX_VERSION=1.27.0
 
