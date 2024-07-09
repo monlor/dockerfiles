@@ -2,7 +2,7 @@
 FROM php:7.3-apache
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.1
+LABEL VERSION 2.0.0
 
 ENV TZ Asia/Shanghai
 
@@ -28,24 +28,26 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /var/www/html
 
 # 下载v免签服务源代码并解压到镜像中
-RUN git clone https://github.com/monlor/Epay-master /tmp/epay && \
-    chmod -R 777 /tmp/epay && \
-    rm -rf /tmp/epay/.git
+RUN git clone https://github.com/monlor/Epay-master /var/www/html && \
+    chmod -R 777 /var/www/html && \
+    rm -rf /var/www/html/.git
 
 # 开启伪静态支持
 RUN a2enmod rewrite
 
 # 添加 tokenpay 插件
 RUN git clone https://github.com/LightCountry/TokenPay && \
-    cat TokenPay/Plugs/epay/*.sql > /tmp/epay/epay.sql && \
+    cat TokenPay/Plugs/epay/*.sql > /var/www/html/epay.sql && \
     rm -rf TokenPay/Plugs/epay/*.sql TokenPay/Plugs/epay/{.git,README.md} && \
-    cp -a TokenPay/Plugs/epay/* /tmp/epay && \
+    cp -a TokenPay/Plugs/epay/* /var/www/html && \
     rm -rf TokenPay
 
 # Expose端口
 EXPOSE 80
 
-ADD plugins /tmp/epay/plugins
+ADD plugins /var/www/html/plugins
+
+ADD assets /var/www/html/assets
 
 COPY start.sh /opt/start.sh
 
