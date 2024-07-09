@@ -2,7 +2,7 @@
 FROM php:7.3-apache
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 2.0.0
+LABEL VERSION 2.0.1
 
 ENV TZ Asia/Shanghai
 

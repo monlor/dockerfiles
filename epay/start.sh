@@ -2,11 +2,27 @@
 
 set -e
 
-# 先更新安装文件
-cp -rf /var/www/html/install/ /data/install/
+if [ -n "${INSTALLED:-}" ]; then
+    echo "使用环境变量设置安装状态..."
+    if [ "${INSTALLED}" = "true" ]; then
+        echo "安装锁" > /var/www/html/install/install.lock
+    else
+        rm -rf /var/www/html/install/install.lock
+    fi
+else
+    echo "使用挂载卷保存安装状态..."
 
-# 软连接安装文件，保存install.lock
-ln -sf /data/install /var/www/html/install
+    if [ ! -d /data/install ]; then
+        mkdir -p /data/install
+    fi
+
+    # 先更新安装文件
+    mv -f /var/www/html/install/* /data/install
+    rm -rf /var/www/html/install
+
+    # 软连接安装文件，保存install.lock
+    ln -sf /data/install /var/www/html/install
+fi
 
 cat > /var/www/html/config.php <<-EOF
 <?php

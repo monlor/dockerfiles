@@ -5,7 +5,7 @@ services:
     image: monlor/epay
     container_name: epay
     volumes:
-      - epay:/var/www/html
+      - epay:/data
     ports:
       - "80:80"
     depends_on:
