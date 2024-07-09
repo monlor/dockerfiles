@@ -2,13 +2,11 @@ FROM node:18 AS build
 
 WORKDIR /opt/node_app
 
-ENV EXCALIDRAW_VERSION=0.17.6
-
-RUN curl -LO https://gh.monlor.com/https://github.com/excalidraw/excalidraw/archive/refs/tags/v${EXCALIDRAW_VERSION}.zip && \
-    unzip v${EXCALIDRAW_VERSION}.zip && \
-    cp -a excalidraw-${EXCALIDRAW_VERSION}/* . && \
-    cp -a excalidraw-${EXCALIDRAW_VERSION}/.[!.]* . && \
-    rm -rf v${EXCALIDRAW_VERSION}.zip excalidraw-${EXCALIDRAW_VERSION}
+RUN curl -LO https://github.com/excalidraw/excalidraw/archive/refs/heads/master.zip && \
+    unzip master.zip && \
+    cp -rf excalidraw-master/* . && \
+    cp -rf excalidraw-master/.[!.]* . && \
+    rm -rf excalidraw-master master.zip
 
 # do not ignore optional dependencies:
 # Error: Cannot find module @rollup/rollup-linux-x64-gnu
