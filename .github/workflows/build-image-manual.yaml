@@ -25,7 +25,6 @@ on:
         - vmianqian
         - tokenpay
         - n8n
-        - epusdt
         - bepusdt
         - http-dump
         - kubectl
@@ -36,6 +35,7 @@ on:
         - sniproxy
         - xboard
         - ws-scrcpy
+        - excalidraw
       tag:
         description: 'Image tag'
 
