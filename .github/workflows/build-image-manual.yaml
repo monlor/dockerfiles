@@ -36,6 +36,7 @@ on:
         - xboard
         - ws-scrcpy
         - excalidraw
+        - linkstack
       tag:
         description: 'Image tag'
 
