@@ -12,7 +12,7 @@ if [ ! -f /data/.env ]; then
   cp -R /htdocs/assets/linkstack/images /data/assets/linkstack
   cp -R /htdocs/themes /data
   cp -R /htdocs/assets/img /data/assets
-  touch /data/config/advanced-config.php
+  cp -R /tmp/advanced-config.php /data/config/advanced-config.php
   chown apache:apache -R /data
 fi  
 
