@@ -9,7 +9,7 @@ RUN apk add --no-cache rsync
 
 RUN curl -Lo /tmp/linkstack.zip https://github.com/LinkStackOrg/LinkStack/releases/download/${LINKSTACK_VERSION}/linkstack.zip && \
     unzip /tmp/linkstack.zip -d /tmp && \
-    rsync -avz --delete /tmp/linkstack /htdocs && \
+    rsync -avz --delete /tmp/linkstack/ /htdocs/ && \
     chown -R apache:apache /htdocs && \
     rm -rf /tmp/*
 
