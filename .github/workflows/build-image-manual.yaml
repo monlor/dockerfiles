@@ -16,7 +16,6 @@ on:
         - coder-development
         - epay
         - dujiaoka
-        - helmfile
         - opsutils
         - tidb-toolkit
         - jenkins

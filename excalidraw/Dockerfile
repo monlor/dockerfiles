@@ -23,6 +23,6 @@ LABEL VERSION 1.0.1
 
 COPY --from=build /opt/node_app/excalidraw-app/build /usr/share/nginx/html
 
-COPY Mengshen.woff /usr/share/nginx/html/Virgil.woff2
+COPY Mengshen.woff /usr/share/nginx/html/fonts/Virgil.woff2
 
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost || exit 1
