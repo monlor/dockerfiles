@@ -19,8 +19,10 @@ RUN yarn build:app:docker
 FROM nginx:1.24-alpine
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.0
+LABEL VERSION 1.0.1
 
 COPY --from=build /opt/node_app/excalidraw-app/build /usr/share/nginx/html
+
+COPY Mengshen.woff /usr/share/nginx/html/Virgil.woff2
 
 HEALTHCHECK CMD wget -q -O /dev/null http://localhost || exit 1
