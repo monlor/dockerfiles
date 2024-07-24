@@ -1,7 +1,5 @@
 #!/bin/sh
 
-ADB_ADDRESS=redroid-1:5555
-
 TIMEOUT=${TIMEOUT:-60}
 
 if [ -n "${ADB_ADDRESS:-}" ]; then
