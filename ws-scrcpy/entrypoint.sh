@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ADB_ADDRESS=redroid-1:5555
+
 TIMEOUT=${TIMEOUT:-60}
 
 if [ -n "${ADB_ADDRESS:-}" ]; then
@@ -8,7 +10,7 @@ if [ -n "${ADB_ADDRESS:-}" ]; then
     host=$(echo ${address} | cut -d':' -f1)
     port=$(echo ${address} | cut -d':' -f2)
     start=0
-    while ! nc -z "${host}" "${port}" &> /dev/null; do
+    while ! nc -w 1 -z "${host}" "${port}"; do
       echo "Failed to connect to ${address}, retry after 1s ..."
       sleep 1
       start=$((start+1))
