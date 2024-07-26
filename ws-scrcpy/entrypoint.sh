@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TIMEOUT=${TIMEOUT:-60}
+TIMEOUT=${TIMEOUT:-300}
 
 if [ -n "${ADB_ADDRESS:-}" ]; then
   echo ${ADB_ADDRESS} | tr ',' '\n' | while read address; do
