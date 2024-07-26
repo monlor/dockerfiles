@@ -36,6 +36,7 @@ on:
         - ws-scrcpy
         - excalidraw
         - linkstack
+        - firefox
       tag:
         description: 'Image tag'
 
