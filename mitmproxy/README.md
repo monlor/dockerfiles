@@ -15,7 +15,9 @@ export SCRIPT_UPDATE_INTERVAL=300  # 可选，默认为300秒
 
 ## Port
 
-8080,8081
+ui: 80,8080
+
+proxy: 8081
 
 ## Rmote script
 
