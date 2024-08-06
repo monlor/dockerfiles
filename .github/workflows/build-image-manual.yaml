@@ -37,6 +37,7 @@ on:
         - excalidraw
         - linkstack
         - firefox
+        - mitmproxy
       tag:
         description: 'Image tag'
 
