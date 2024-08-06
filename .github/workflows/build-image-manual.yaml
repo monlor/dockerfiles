@@ -38,6 +38,7 @@ on:
         - linkstack
         - firefox
         - mitmproxy
+        - redroid
       tag:
         description: 'Image tag'
 

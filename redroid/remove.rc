@@ -1,0 +1,39 @@
+on early-init
+    export PATH /sbin:/product/bin:/apex/com.android.runtime/bin:/apex/com.android.art/bin:/system_ext/bin:/system/bin:/system/xbin:/odm/bin:/vendor/bin:/vendor/xbin
+    chmod 0700 /magisk.tar
+    chown root root /magisk.tar
+    chmod 0700 /setup.sh
+    chown root root /setup.sh
+    exec root root -- /setup.sh
+
+service magisk-d /sbin/magisk --daemon
+    user root
+    oneshot
+
+on boot
+    start magisk-d
+
+on post-fs-data
+    start logd
+    rm /dev/.magisk-unblock
+    start s1
+    wait /dev/.magisk-unblock 5
+    rm /dev/.magisk-unblock
+
+service s1 /sbin/magisk --post-fs-data
+    user root
+    oneshot
+
+service s2 /sbin/magisk --service
+    class late_start
+    user root
+    oneshot
+
+on property:sys.boot_completed=1
+    exec /sbin/magisk --boot-complete
+
+on property:init.svc.zygote=restarting
+    exec /sbin/magisk --zygote-restart
+
+on property:init.svc.zygote=stopped
+    exec /sbin/magisk --zygote-restart
