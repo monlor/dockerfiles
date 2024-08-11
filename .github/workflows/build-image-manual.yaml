@@ -39,6 +39,7 @@ on:
         - firefox
         - mitmproxy
         - redroid
+        - nginx-proxy-manager
       tag:
         description: 'Image tag'
 
