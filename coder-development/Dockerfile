@@ -25,7 +25,6 @@ RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dot
 RUN export PATH=/tmp/code-server/bin:$PATH && \
     code-server --install-extension eamodio.gitlens && \
     code-server --install-extension formulahendry.auto-close-tag && \
-    code-server --install-extension GitHub.copilot && \
     code-server --install-extension GitHub.github-vscode-theme && \
     code-server --install-extension github.vscode-github-actions && \
     code-server --install-extension GitHub.vscode-pull-request-github && \
