@@ -121,8 +121,6 @@ p-smith.com
 img.vm-movie.jp
 saima.zlzd.xyz
 challenges.cloudflare.com
-ai.com
-openai.com
 cdn.oaistatic.com
 aiv-cdn.net
 aiv-delivery.net
@@ -138,4 +136,10 @@ primevideo.info
 primevideo.org
 primevideo.tv
 pv-cdn.net
+ai.com
+openai.com
 chatgpt.com
+anthropic.com
+claude.ai
+servd-anthropic-website.b-cdn.net
+claude.site
