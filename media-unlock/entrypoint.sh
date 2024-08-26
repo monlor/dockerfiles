@@ -8,6 +8,7 @@ CONFIG_FILE=/etc/dnsmasq.conf
 # Define a list of SNI_IPs, separated by commas
 IFS=',' read -r -a MEDIA_IP_LIST <<< "${MEDIA_IPS}"  # Split the string into an array
 IFS=',' read -r -a OPENAI_IP_LIST <<< "${OPENAI_IPS:-}"  # Split the string into an array
+IFS=',' read -r -a ANTHROPIC_IP_LIST <<< "${ANTHROPIC_IPS:-}"  # Split the string into an array
 
 # Set the interval for testing (in seconds)
 # Default to 60 seconds if not set
@@ -16,6 +17,7 @@ INTERVAL=${TEST_INTERVAL:-60}
 # Variable to hold the current IP
 current_media_ip=""
 current_openai_ip=""
+current_anthropic_ip=""
 
 # Function to test the current IP address
 test_current_ip() {
@@ -53,6 +55,18 @@ switch_openai_ip() {
   echo "openai: No available IP found."
 }
 
+# Function to switch to the next available IP
+switch_anthropic_ip() {
+  for ip in "${ANTHROPIC_IP_LIST[@]}"; do
+    if curl -s --connect-timeout 5 "http://$ip:80" > /dev/null; then
+      echo "anthropic: Switching to $ip."
+      current_anthropic_ip="$ip"
+      return 0
+    fi
+  done
+  echo "anthropic: No available IP found."
+}
+
 # Function to generate dnsmasq configuration for all domains using a specified IP
 generate_dnsmasq_config() {
   # Clear the existing configuration file
@@ -82,6 +96,12 @@ EOF
     done < /tmp/openai.txt
   fi
 
+  if [ -n "${current_anthropic_ip}" ]; then
+    while read -r domain; do
+      echo "address=/$domain/$current_anthropic_ip" >> "/tmp/dnsmasq.conf"
+    done < /tmp/anthropic.txt
+  fi
+
   # Move the generated configuration to the actual dnsmasq configuration file
   mv -f "/tmp/dnsmasq.conf" "$CONFIG_FILE"
 }
@@ -89,6 +109,7 @@ EOF
 # Initialize with the first available IP
 switch_media_ip || exit 1
 switch_openai_ip
+switch_anthropic_ip
 
 # Generate the initial dnsmasq configuration
 generate_dnsmasq_config
@@ -107,6 +128,13 @@ while true; do
 
   if [ -n "${current_openai_ip}" ] && ! test_current_ip "${current_openai_ip}"; then
     switch_openai_ip
+
+    # Update the dnsmasq configuration with the new reachable IP
+    generate_dnsmasq_config 
+  fi
+
+  if [ -n "${current_anthropic_ip}" ] && ! test_current_ip "${current_anthropic_ip}"; then
+    switch_anthropic_ip
 
     # Update the dnsmasq configuration with the new reachable IP
     generate_dnsmasq_config 

@@ -14,4 +14,6 @@ docker run -d --name media-unlock -e SNI_IP=x.x.x.x -p 53:53 monlor/media-unlock
 
 `OPENAI_IPS`: 可选，OPENAI IP列表
 
+`ANTHROPIC_IPS`: 可选，Claude IP列表
+
 `TEST_INTERVAL`: IP可用性测试间隔，默认60
