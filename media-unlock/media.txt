@@ -136,10 +136,3 @@ primevideo.info
 primevideo.org
 primevideo.tv
 pv-cdn.net
-ai.com
-openai.com
-chatgpt.com
-anthropic.com
-claude.ai
-servd-anthropic-website.b-cdn.net
-claude.site
