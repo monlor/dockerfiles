@@ -6,7 +6,7 @@ set -e
 WEBDAV_URL="${WEBDAV_URL}"
 WEBDAV_USERNAME="${WEBDAV_USERNAME}"
 WEBDAV_PASSWORD="${WEBDAV_PASSWORD}"
-WEBDAV_PATH="${WEBDAV_PATH:-/backup}"
+WEBDAV_PATH="${WEBDAV_PATH:-}"
 BACKUP_DIRS="${BACKUP_DIRS}"
 
 # 临时目录用于下载备份文件
@@ -14,8 +14,8 @@ TEMP_DIR=$(mktemp -d)
 
 # 函数：从用户输入获取备份文件名
 get_backup_filename() {
-    read -p "请输入要恢复的备份文件名（格式：backup_YYYYMMDD_HHMMSS.tar.gz）: " BACKUP_FILE
-    if [[ ! $BACKUP_FILE =~ ^backup_[0-9]{8}_[0-9]{6}\.tar\.gz$ ]]; then
+    read -p "请输入要恢复的备份文件名（格式：backup_YYYYMMDD_HHMMSS.tar.gz 或 backup_YYYYMMDD_HHMMSS.tar.gz.txt）: " BACKUP_FILE
+    if [[ ! $BACKUP_FILE =~ ^backup_[0-9]{8}_[0-9]{6}\.tar\.gz(\.txt)?$ ]]; then
         echo "错误：无效的文件名格式。"
         exit 1
     fi
@@ -34,17 +34,17 @@ construct_backup_path() {
 # 函数：从 WebDAV 下载备份文件
 download_backup() {
     local backup_path="$1"
-    echo "正在从 WebDAV 下载备份文件..."
-    HTTP_CODE=$(curl -#L -w "%{http_code}" -o "${TEMP_DIR}/${BACKUP_FILE}" \
+    local output_file="$2"
+    echo "正在从 WebDAV 下载文件: $backup_path"
+    HTTP_CODE=$(curl -#L -w "%{http_code}" -o "$output_file" \
                     -u "${WEBDAV_USERNAME}:${WEBDAV_PASSWORD}" \
                     "${backup_path}")
 
     if [ "$HTTP_CODE" = "200" ]; then
-        echo "备份文件下载成功。"
+        echo "文件下载成功。"
     else
-        echo "错误：备份文件下载失败。HTTP 状态码: ${HTTP_CODE}"
-        rm -rf "$TEMP_DIR"
-        exit 1
+        echo "错误：文件下载失败。HTTP 状态码: ${HTTP_CODE}"
+        return 1
     fi
 }
 
@@ -67,14 +67,50 @@ if [ -z "$1" ]; then
     get_backup_filename
 else
     BACKUP_FILE="$1"
-    if [[ ! $BACKUP_FILE =~ ^backup_[0-9]{8}_[0-9]{6}\.tar\.gz$ ]]; then
+    if [[ ! $BACKUP_FILE =~ ^backup_[0-9]{8}_[0-9]{6}\.tar\.gz(\.txt)?$ ]]; then
         echo "错误：无效的文件名格式。"
         exit 1
     fi
 fi
 
 construct_backup_path "$BACKUP_FILE"
-download_backup "$BACKUP_PATH"
+
+if [[ $BACKUP_FILE == *.txt ]]; then
+    # 下载备份列表文件
+    BACKUP_LIST_FILE="${TEMP_DIR}/${BACKUP_FILE}"
+    if ! download_backup "$BACKUP_PATH" "$BACKUP_LIST_FILE"; then
+        echo "错误：无法下载备份列表文件。"
+        rm -rf "$TEMP_DIR"
+        exit 1
+    fi
+
+    # 读取备份列表并下载文件
+    while IFS= read -r file_name; do
+        file_url="${BACKUP_PATH%/*}/${file_name}"
+        output_file="${TEMP_DIR}/${file_name}"
+        
+        if ! download_backup "$file_url" "$output_file"; then
+            echo "错误：无法下载文件 $file_name"
+            rm -rf "$TEMP_DIR"
+            exit 1
+        fi
+    done < "$BACKUP_LIST_FILE"
+
+    # 如果有多个文件，先合并
+    if ls "${TEMP_DIR}/${BACKUP_FILE%.txt}.part-"* 1> /dev/null 2>&1; then
+        echo "正在合并拆分的备份文件..."
+        cat "${TEMP_DIR}/${BACKUP_FILE%.txt}.part-"* > "${TEMP_DIR}/${BACKUP_FILE%.txt}"
+    fi
+
+    BACKUP_FILE="${BACKUP_FILE%.txt}"
+else
+    # 直接下载单个备份文件
+    if ! download_backup "$BACKUP_PATH" "${TEMP_DIR}/${BACKUP_FILE}"; then
+        echo "错误：无法下载备份文件。"
+        rm -rf "$TEMP_DIR"
+        exit 1
+    fi
+fi
 
 # 警告用户
 echo "警告：此操作将删除以下目录中的所有现有数据，并用备份数据替换："
@@ -92,6 +128,7 @@ remove_existing_files
 
 # 开始恢复
 echo "开始恢复数据..."
+
 tar -xzf "${TEMP_DIR}/${BACKUP_FILE}" -C / --absolute-names
 
 if [ $? -eq 0 ]; then

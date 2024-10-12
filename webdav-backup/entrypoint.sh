@@ -52,6 +52,45 @@ startup_message+="WebDAV 路径: ${WEBDAV_PATH}"
 
 send_telegram_message "$startup_message"
 
+# 验证 BACKUP_SPLIT_SIZE 格式
+validate_split_size() {
+    if [[ ! $BACKUP_SPLIT_SIZE =~ ^[0-9]+[bkmgtBKMGT]?$ ]]; then
+        echo "错误: BACKUP_SPLIT_SIZE 格式无效。请使用数字后跟可选的单位后缀 (b, k, m, g, t)。例如: 100M, 1G, 500K"
+        exit 1
+    fi
+}
+
+# 设置文件拆分大小，如果不设置则不拆分
+BACKUP_SPLIT_SIZE=${BACKUP_SPLIT_SIZE:-}
+
+if [ -n "$BACKUP_SPLIT_SIZE" ]; then
+    validate_split_size
+    echo "文件拆分大小: ${BACKUP_SPLIT_SIZE}"
+else
+    echo "文件不拆分"
+fi
+
+# 添加上传文件的函数
+upload_file() {
+    local file="$1"
+    local remote_path="$2"
+    HTTP_CODE=$(curl -#L -u "${WEBDAV_USERNAME}:${WEBDAV_PASSWORD}" \
+            -T "$file" \
+            "${WEBDAV_URL}${WEBDAV_PATH}/${remote_path}" \
+            --connect-timeout 30 \
+            --max-time 3600 \
+            -w "%{http_code}" \
+            -o /dev/null)
+
+    if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
+        echo "上传完成: ${remote_path}"
+    else
+        error_message="错误: 无法上传文件 ${remote_path}. HTTP 状态码: ${HTTP_CODE}"
+        echo "$error_message"
+        send_telegram_message "<b>WebDAV 备份失败</b>%0A任务名称: ${BACKUP_TASK_NAME}%0A${error_message}"
+    fi
+}
+
 # 无限循环执行备份
 while true; do
     # 获取当前日期
@@ -68,32 +107,29 @@ while true; do
         
     echo "压缩备份目录..."
     
-    # 使用 pv 显示压缩进度
-    if command -v pv &> /dev/null; then
-        tar -cf - --absolute-names ${BACKUP_DIRS} | pv -s $(du -sb ${BACKUP_DIRS} | awk '{sum+=$1} END {print sum}') | gzip > "${TEMP_DIR}/${BACKUP_FILE}"
+    # 创建备份文件列表
+    BACKUP_LIST_FILE="${TEMP_DIR}/${BACKUP_FILE}.txt"
+    
+    if [ -n "$BACKUP_SPLIT_SIZE" ]; then
+        tar -czf - --absolute-names ${BACKUP_DIRS} | split -b ${BACKUP_SPLIT_SIZE} - "${TEMP_DIR}/${BACKUP_FILE}.part-"
+        for part in "${TEMP_DIR}/${BACKUP_FILE}.part-"*; do
+            echo "$(basename "$part")" >> "$BACKUP_LIST_FILE"
+        done
     else
-        echo "警告: pv 未安装，将不显示进度"
         tar -czf "${TEMP_DIR}/${BACKUP_FILE}" --absolute-names ${BACKUP_DIRS}
     fi
     
     echo "压缩完成，开始上传..."
     
-    # 直接上传到WebDAV服务器的年月日文件夹中
-    HTTP_CODE=$(curl -u "${WEBDAV_USERNAME}:${WEBDAV_PASSWORD}" \
-            -T "${TEMP_DIR}/${BACKUP_FILE}" \
-            "${WEBDAV_URL}${WEBDAV_PATH}/${CURRENT_DATE}/${BACKUP_FILE}" \
-            --connect-timeout 30 \
-            --max-time 3600 \
-            --progress-bar \
-            -w "%{http_code}" \
-            -o /dev/null)
-
-    if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
-        echo "备份完成: ${CURRENT_DATE}/${BACKUP_FILE}"
+    # 上传文件（可能是拆分后的多个文件）
+    if [ -n "$BACKUP_SPLIT_SIZE" ]; then
+        for part in "${TEMP_DIR}/${BACKUP_FILE}.part-"*; do
+            upload_file "$part" "${CURRENT_DATE}/$(basename "$part")"
+        done
+        # 上传备份文件列表
+        upload_file "$BACKUP_LIST_FILE" "${CURRENT_DATE}/${BACKUP_FILE}.txt"
     else
-        error_message="错误: 无法上传备份文件 ${BACKUP_FILE}. HTTP 状态码: ${HTTP_CODE}"
-        echo "$error_message"
-        send_telegram_message "<b>WebDAV 备份失败</b>%0A任务名称: ${BACKUP_TASK_NAME}%0A${error_message}"
+        upload_file "${TEMP_DIR}/${BACKUP_FILE}" "${CURRENT_DATE}/${BACKUP_FILE}"
     fi
     
     # 清理临时文件
@@ -104,5 +140,4 @@ while true; do
     # 等待下一次备份
     echo "等待 ${BACKUP_INTERVAL} 分钟后再进行备份..."
     sleep $((BACKUP_INTERVAL * 60))
-
 done

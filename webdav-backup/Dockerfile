@@ -1,10 +1,10 @@
 FROM alpine:latest
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.1
+LABEL VERSION 1.1.0
 
 # 安装必要的工具
-RUN apk add --no-cache bash curl tar pv && mkdir -p /data
+RUN apk add --no-cache bash curl tar gzip && mkdir -p /data
 
 # 复制脚本到容器
 COPY --chmod=755 *.sh /
