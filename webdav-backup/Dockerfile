@@ -4,10 +4,7 @@ FROM alpine:latest
 RUN apk add --no-cache bash curl tar pv
 
 # 复制脚本到容器
-COPY entrypoint.sh /entrypoint.sh
-
-# 设置执行权限
-RUN chmod +x /entrypoint.sh
+COPY --chmod=755 *.sh /
 
 # 设置环境变量
 ENV WEBDAV_URL=""

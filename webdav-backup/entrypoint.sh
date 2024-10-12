@@ -13,8 +13,6 @@ echo "WebDAV URL: ${WEBDAV_URL}"
 echo "WebDAV 用户名: ${WEBDAV_USERNAME}"
 echo "WebDAV 路径: ${WEBDAV_PATH}"
 
-echo "--------------------------------"
-
 # 无限循环执行备份
 while true; do
     # 获取当前日期
