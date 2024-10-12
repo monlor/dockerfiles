@@ -41,6 +41,7 @@ on:
         - redroid
         - nginx-proxy-manager
         - authelia
+        - webdav-backup
       tag:
         description: 'Image tag'
 
