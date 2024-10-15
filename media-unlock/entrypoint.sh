@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -u
 
 # Configuration file for dnsmasq
 CONFIG_FILE=/etc/dnsmasq.conf
