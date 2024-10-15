@@ -39,8 +39,8 @@ switch_media_ip() {
       return 0
     fi
   done
+  unset current_media_ip
   echo "media: No available IP found."
-  return 1
 }
 
 # Function to switch to the next available IP
@@ -52,6 +52,7 @@ switch_openai_ip() {
       return 0
     fi
   done
+  unset current_openai_ip
   echo "openai: No available IP found."
 }
 
@@ -64,6 +65,7 @@ switch_anthropic_ip() {
       return 0
     fi
   done
+  unset current_anthropic_ip
   echo "anthropic: No available IP found."
 }
 
@@ -107,7 +109,7 @@ EOF
 }
 
 # Initialize with the first available IP
-switch_media_ip || exit 1
+switch_media_ip 
 switch_openai_ip
 switch_anthropic_ip
 
@@ -120,7 +122,7 @@ dnsmasq -d &
 # Periodically test the current IP and switch if necessary
 while true; do
   if ! test_current_ip "${current_media_ip}"; then
-    switch_media_ip || exit 1  # Switch to a new IP if the current one is not reachable
+    switch_media_ip
 
     # Update the dnsmasq configuration with the new reachable IP
     generate_dnsmasq_config 
