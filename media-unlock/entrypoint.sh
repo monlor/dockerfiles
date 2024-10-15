@@ -39,7 +39,7 @@ switch_media_ip() {
       return 0
     fi
   done
-  unset current_media_ip
+  current_media_ip=""
   echo "media: No available IP found."
 }
 
@@ -52,7 +52,7 @@ switch_openai_ip() {
       return 0
     fi
   done
-  unset current_openai_ip
+  current_openai_ip=""
   echo "openai: No available IP found."
 }
 
@@ -65,7 +65,7 @@ switch_anthropic_ip() {
       return 0
     fi
   done
-  unset current_anthropic_ip
+  current_anthropic_ip=""
   echo "anthropic: No available IP found."
 }
 
