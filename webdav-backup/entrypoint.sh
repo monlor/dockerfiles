@@ -86,7 +86,7 @@ encrypt_file() {
 
     if [ "$ENCRYPTION_ENABLED" = true ]; then
         echo "正在加密文件: ${input_file}"
-        openssl enc -aes-256-cbc -salt -in "$input_file" -out "${input_file}.tmp" -k "$ENCRYPTION_PASSWORD"
+        openssl enc -aes-256-cbc -pbkdf2 -salt -in "$input_file" -out "${input_file}.tmp" -k "$ENCRYPTION_PASSWORD"
         mv "${input_file}.tmp" "$output_file"
     fi
 }

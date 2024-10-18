@@ -53,7 +53,7 @@ download_and_decrypt_backup() {
         echo "文件下载成功。"
         if [ "$ENCRYPTION_ENABLED" = true ]; then
             echo "正在解密文件..."
-            openssl enc -d -aes-256-cbc -in "$output_file" -out "${output_file}.tmp" -k "$ENCRYPTION_PASSWORD"
+            openssl enc -d -aes-256-cbc -pbkdf2 -in "$output_file" -out "${output_file}.tmp" -k "$ENCRYPTION_PASSWORD"
             mv "${output_file}.tmp" "$output_file"
         fi
     else

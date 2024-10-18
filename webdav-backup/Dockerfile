@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.1.1
+LABEL VERSION 1.1.2
 
 # 安装必要的工具
 RUN apk add --no-cache bash curl tar gzip openssl && mkdir -p /data
