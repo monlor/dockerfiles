@@ -21,6 +21,7 @@ on:
         - jenkins
         - subconverter
         - frps
+        - frpc
         - vmianqian
         - tokenpay
         - n8n
