@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.2
+LABEL VERSION 1.0.3
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -17,10 +17,10 @@ RUN apt update && apt install -y tzdata && \
 
 USER coder
 
-RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.90.3
+RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server
 
-RUN git clone https://github.com/monlor/dotfiles /home/coder/.config/coderv2/dotfiles && \
-    cd /home/coder/.config/coderv2/dotfiles && ./install.sh 
+RUN git clone https://github.com/monlor/dotfiles /tmp/dotfiles && \
+    cd /tmp/dotfiles && ./install.sh && rm -rf /tmp/dotfiles
 
 RUN export PATH=/tmp/code-server/bin:$PATH && \
     code-server --install-extension eamodio.gitlens && \
