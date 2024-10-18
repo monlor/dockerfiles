@@ -15,6 +15,15 @@ else
     echo "Telegram 通知未启用"
 fi
 
+# 检查加密相关环境变量
+if [ -n "$ENCRYPTION_PASSWORD" ]; then
+    ENCRYPTION_ENABLED=true
+    echo "备份加密已启用"
+else
+    ENCRYPTION_ENABLED=false
+    echo "备份加密未启用"
+fi
+
 # 添加发送 Telegram 消息的函数
 send_telegram_message() {
     if [ "$TELEGRAM_ENABLED" = true ]; then
@@ -70,10 +79,27 @@ else
     echo "文件不拆分"
 fi
 
-# 添加上传文件的函数
+# 修改加密文件的函数
+encrypt_file() {
+    local input_file="$1"
+    local output_file="$1"  # 保持输出文件名与输入文件名相同
+
+    if [ "$ENCRYPTION_ENABLED" = true ]; then
+        echo "正在加密文件: ${input_file}"
+        openssl enc -aes-256-cbc -salt -in "$input_file" -out "${input_file}.tmp" -k "$ENCRYPTION_PASSWORD"
+        mv "${input_file}.tmp" "$output_file"
+    fi
+}
+
+# 修改上传文件的函数
 upload_file() {
     local file="$1"
     local remote_path="$2"
+
+    if [ "$ENCRYPTION_ENABLED" = true ]; then
+        encrypt_file "$file"
+    fi
+
     HTTP_CODE=$(curl -#L -u "${WEBDAV_USERNAME}:${WEBDAV_PASSWORD}" \
             -T "$file" \
             "${WEBDAV_URL}${WEBDAV_PATH}/${remote_path}" \

@@ -1,6 +1,6 @@
 # WebDAV备份工具
 
-这个工具可以定期将指定的目录备份到WebDAV服务器，并提供恢复功能。
+这个工具可以定期将指定的目录备份到WebDAV服务器，并提供恢复功能。支持文件加密和解密。
 
 ## 功能
 
@@ -11,6 +11,7 @@
 - 从WebDAV服务器恢复指定的备份文件
 - 支持 Telegram 通知（启动时和备份失败时）
 - 可自定义备份任务名称
+- 支持备份文件加密和解密
 
 ## 使用方法
 
@@ -21,6 +22,7 @@ docker run -d \
   -e WEBDAV_URL="https://your-webdav-server.com/backup" \
   -e WEBDAV_USERNAME="your_username" \
   -e WEBDAV_PASSWORD="your_password" \
+  -e ENCRYPTION_PASSWORD="your_encryption_password" \
   -v /path/to/data:/data \
   monlor/webdav-backup
 ```
@@ -61,6 +63,7 @@ docker exec -it <container_id_or_name> /bin/bash
 - `BACKUP_SPLIT_SIZE`: 备份文件拆分大小（可选）。格式为数字后跟可选的单位后缀（b, k, m, g, t）。例如：100M, 1G, 500K。如果不设置，备份文件将不会被拆分。
 - `TELEGRAM_BOT_TOKEN`: Telegram Bot 的 token（可选）
 - `TELEGRAM_CHAT_ID`: 接收 Telegram 通知的聊天 ID（可选）
+- `ENCRYPTION_PASSWORD`: 用于加密备份文件的密码（可选）。如果设置了此变量，备份文件将被加密。
 
 ## 注意事项
 
@@ -73,6 +76,9 @@ docker exec -it <container_id_or_name> /bin/bash
 - 如果配置了 Telegram 通知，只有在备份失败时才会发送额外的通知
 - 当使用 `BACKUP_SPLIT_SIZE` 时，备份文件会被拆分成多个部分，并创建一个同名的 .txt 文件列表
 - 恢复时，可以使用 .tar.gz 文件名（未拆分）或 .tar.gz.txt 文件名（拆分文件列表）
+- 如果设置了 `ENCRYPTION_PASSWORD`，备份文件将被加密。确保在恢复时使用相同的密码。
+- 加密后的文件名保持不变，这意味着在WebDAV服务器上看到的文件名与未加密时相同。
+- 在恢复加密的备份时，必须提供正确的 `ENCRYPTION_PASSWORD`，否则恢复将失败。
 
 ## 贡献
 

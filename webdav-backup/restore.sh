@@ -12,6 +12,15 @@ BACKUP_DIRS="${BACKUP_DIRS}"
 # 临时目录用于下载备份文件
 TEMP_DIR=$(mktemp -d)
 
+# 检查加密密码
+if [ -n "$ENCRYPTION_PASSWORD" ]; then
+    ENCRYPTION_ENABLED=true
+    echo "备份解密已启用"
+else
+    ENCRYPTION_ENABLED=false
+    echo "备份解密未启用"
+fi
+
 # 函数：从用户输入获取备份文件名
 get_backup_filename() {
     read -p "请输入要恢复的备份文件名（格式：backup_YYYYMMDD_HHMMSS.tar.gz 或 backup_YYYYMMDD_HHMMSS.tar.gz.txt）: " BACKUP_FILE
@@ -31,8 +40,8 @@ construct_backup_path() {
     BACKUP_PATH="${WEBDAV_URL}${WEBDAV_PATH}/${year}/${month}/${day}/${filename}"
 }
 
-# 函数：从 WebDAV 下载备份文件
-download_backup() {
+# 函数：从 WebDAV 下载并解密备份文件
+download_and_decrypt_backup() {
     local backup_path="$1"
     local output_file="$2"
     echo "正在从 WebDAV 下载文件: $backup_path"
@@ -42,6 +51,11 @@ download_backup() {
 
     if [ "$HTTP_CODE" = "200" ]; then
         echo "文件下载成功。"
+        if [ "$ENCRYPTION_ENABLED" = true ]; then
+            echo "正在解密文件..."
+            openssl enc -d -aes-256-cbc -in "$output_file" -out "${output_file}.tmp" -k "$ENCRYPTION_PASSWORD"
+            mv "${output_file}.tmp" "$output_file"
+        fi
     else
         echo "错误：文件下载失败。HTTP 状态码: ${HTTP_CODE}"
         return 1
@@ -78,7 +92,7 @@ construct_backup_path "$BACKUP_FILE"
 if [[ $BACKUP_FILE == *.txt ]]; then
     # 下载备份列表文件
     BACKUP_LIST_FILE="${TEMP_DIR}/${BACKUP_FILE}"
-    if ! download_backup "$BACKUP_PATH" "$BACKUP_LIST_FILE"; then
+    if ! download_and_decrypt_backup "$BACKUP_PATH" "$BACKUP_LIST_FILE"; then
         echo "错误：无法下载备份列表文件。"
         rm -rf "$TEMP_DIR"
         exit 1
@@ -89,7 +103,7 @@ if [[ $BACKUP_FILE == *.txt ]]; then
         file_url="${BACKUP_PATH%/*}/${file_name}"
         output_file="${TEMP_DIR}/${file_name}"
         
-        if ! download_backup "$file_url" "$output_file"; then
+        if ! download_and_decrypt_backup "$file_url" "$output_file"; then
             echo "错误：无法下载文件 $file_name"
             rm -rf "$TEMP_DIR"
             exit 1
@@ -105,7 +119,7 @@ if [[ $BACKUP_FILE == *.txt ]]; then
     BACKUP_FILE="${BACKUP_FILE%.txt}"
 else
     # 直接下载单个备份文件
-    if ! download_backup "$BACKUP_PATH" "${TEMP_DIR}/${BACKUP_FILE}"; then
+    if ! download_and_decrypt_backup "$BACKUP_PATH" "${TEMP_DIR}/${BACKUP_FILE}"; then
         echo "错误：无法下载备份文件。"
         rm -rf "$TEMP_DIR"
         exit 1
