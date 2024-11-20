@@ -30,6 +30,7 @@ huluim.com
 hbo.com
 hbonow.com
 hbomax.com
+discomax.com
 hbomaxcdn.com
 hboasia.com
 hbogoasia.com
