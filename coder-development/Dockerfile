@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.3
+LABEL VERSION 1.0.4
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -28,3 +28,7 @@ RUN export PATH=/tmp/code-server/bin:$PATH && \
     code-server --install-extension GitHub.github-vscode-theme && \
     code-server --install-extension github.vscode-github-actions && \
     code-server --install-extension GitHub.vscode-pull-request-github 
+
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
