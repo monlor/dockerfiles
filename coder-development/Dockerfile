@@ -10,7 +10,11 @@ ENV TZ=Asia/Shanghai
 
 USER root
 
-RUN apt update && apt install -y tzdata && \
+RUN apt update && apt install -y tzdata openssh-server && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config && \
+    sed -i 's@#HostKey /etc/ssh/ssh_host_rsa_key@HostKey /home/coder/.ssh/ssh_host_rsa_key@g' /etc/ssh/sshd_config && \
+    sed -i 's@#HostKey /etc/ssh/ssh_host_ecdsa_key@HostKey /home/coder/.ssh/ssh_host_ecdsa_key@g' /etc/ssh/sshd_config && \
+    sed -i 's@#HostKey /etc/ssh/ssh_host_ed25519_key@HostKey /home/coder/.ssh/ssh_host_ed25519_key@g' /etc/ssh/sshd_config && \
     rm -rf /var/lib/apt/lists/* && \
     # 修改用户shell
     usermod -s /bin/zsh coder 

@@ -6,4 +6,24 @@ if [ ! -d ~/.dotfiles ]; then
   make install
 fi
 
+if [ -n "${SSH_PUBLIC_KEY}" ]; then
+  if [ ! -d ~/.ssh ]; then
+    mkdir -p ~/.ssh
+    chmod 700 ~/.ssh
+  fi
+  echo "${SSH_PUBLIC_KEY}" > ~/.ssh/authorized_keys
+  chmod 600 ~/.ssh/authorized_keys
+  if [ ! -f ~/.ssh/ssh_host_rsa_key ]; then
+    ssh-keygen -t rsa -f ~/.ssh/ssh_host_rsa_key -N ''
+  fi
+  if [ ! -f ~/.ssh/ssh_host_ecdsa_key ]; then
+    ssh-keygen -t ecdsa -f ~/.ssh/ssh_host_ecdsa_key -N ''
+  fi
+  if [ ! -f ~/.ssh/ssh_host_ed25519_key ]; then
+    ssh-keygen -t ed25519 -f ~/.ssh/ssh_host_ed25519_key -N ''
+  fi
+  chmod 600 ~/.ssh/ssh_host_*
+  /usr/sbin/sshd
+fi
+
 /tmp/code-server/bin/code-server --port 8080 --host 0.0.0.0
