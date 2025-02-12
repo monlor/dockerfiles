@@ -1,12 +1,13 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.5
+LABEL VERSION 1.0.6
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV LANG='C.UTF-8' LC_ALL='C.UTF-8'
 ENV TZ=Asia/Shanghai
+ENV DOCKER_HOST=localhost:2375
 
 USER root
 
@@ -25,13 +26,6 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone
 
 RUN git clone https://github.com/monlor/dotfiles /tmp/dotfiles && \
     cd /tmp/dotfiles && ./install.sh && rm -rf /tmp/dotfiles
-
-RUN export PATH=/tmp/code-server/bin:$PATH && \
-    code-server --install-extension eamodio.gitlens && \
-    code-server --install-extension formulahendry.auto-close-tag && \
-    code-server --install-extension GitHub.github-vscode-theme && \
-    code-server --install-extension github.vscode-github-actions && \
-    code-server --install-extension GitHub.vscode-pull-request-github 
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
