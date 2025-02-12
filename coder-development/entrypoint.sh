@@ -6,6 +6,10 @@ if [ ! -d ~/.dotfiles ]; then
   make install
 fi
 
+# fix ownership of /home/coder
+sudo chown coder:coder /home/coder
+sudo chmod 755 /home/coder
+
 if [ -n "${SSH_PUBLIC_KEY}" ]; then
   if [ ! -d ~/.ssh ]; then
     mkdir -p ~/.ssh
@@ -23,7 +27,7 @@ if [ -n "${SSH_PUBLIC_KEY}" ]; then
     ssh-keygen -t ed25519 -f ~/.ssh/ssh_host_ed25519_key -N ''
   fi
   chmod 600 ~/.ssh/ssh_host_*
-  /usr/sbin/sshd
+  sudo /usr/sbin/sshd
 fi
 
 /tmp/code-server/bin/code-server --port 8080 --host 0.0.0.0
