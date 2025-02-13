@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.0.6
+LABEL VERSION 1.0.7
 
 ARG DEBIAN_FRONTEND=noninteractive
 
