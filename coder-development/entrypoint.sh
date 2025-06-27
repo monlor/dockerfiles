@@ -24,7 +24,13 @@ fi
 if [ ! -f ~/.ssh/ssh_host_ed25519_key ]; then
   ssh-keygen -t ed25519 -f ~/.ssh/ssh_host_ed25519_key -N ''
 fi
+
 chmod 600 ~/.ssh/ssh_host_*
+
+# setup sshd
+if [ ! -d /run/sshd ]; then
+  sudo mkdir -p /run/sshd
+fi
 sudo /usr/sbin/sshd
 
 if [ -n "${SSH_PUBLIC_KEY}" ]; then
