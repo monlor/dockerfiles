@@ -25,7 +25,7 @@ USER coder
 RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server
 
 RUN git clone https://github.com/monlor/dotfiles ~/.dotfiles && \
-    cd ~/.dotfiles && ./install.sh -y -m development
+    cd ~/.dotfiles && ./install.sh -y
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
