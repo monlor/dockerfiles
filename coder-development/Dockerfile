@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.1.2
+LABEL VERSION 1.1.3
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -25,7 +25,7 @@ USER coder
 RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server
 
 RUN git clone https://github.com/monlor/dotfiles ~/.dotfiles && \
-    cd ~/.dotfiles && ./install.sh -y -m development
+    cd ~/.dotfiles && ./install.sh -y -m minimal
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
