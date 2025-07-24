@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.1.3
+LABEL VERSION 1.1.4
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -26,6 +26,8 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone
 
 RUN git clone https://github.com/monlor/dotfiles ~/.dotfiles && \
     cd ~/.dotfiles && ./install.sh -y -m minimal
+
+ENV PATH="$PATH:/home/coder/.local/bin:/home/coder/.asdf/shims"
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
