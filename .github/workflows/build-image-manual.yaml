@@ -53,7 +53,7 @@ on:
         - ghcr
         - dockerhub
         - all
-        default: 'ghcr'
+        default: 'all'
 
 env:
   PROJECT_NAME: ${{ github.event.inputs.project }}
