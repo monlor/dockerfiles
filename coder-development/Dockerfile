@@ -29,4 +29,6 @@ RUN git clone https://github.com/monlor/dotfiles ~/.dotfiles && \
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
+ENV PATH="/opt/asdf/shims:$PATH"
+
 ENTRYPOINT [ "/entrypoint.sh" ]
