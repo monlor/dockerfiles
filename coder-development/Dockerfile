@@ -1,7 +1,7 @@
 FROM codercom/enterprise-base:ubuntu
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 1.1.7
+LABEL VERSION 1.1.8
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -28,6 +28,9 @@ RUN git clone https://github.com/monlor/dotfiles ~/.dotfiles && \
     cd ~/.dotfiles && ./install.sh -y -m development
 
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
+
+ENV ASDF_DIR=/opt/asdf
+ENV ASDF_DATA_DIR=$ASDF_DIR
 
 ENV PATH="/opt/asdf/shims:$PATH"
 
