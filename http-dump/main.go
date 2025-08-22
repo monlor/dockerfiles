@@ -3,12 +3,37 @@ package main
 import (
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"os"
+	"strings"
 )
 
 var port = "8080"
+
+func getClientIP(r *http.Request) string {
+	// Check for X-Forwarded-For header (for proxy/load balancer)
+	xForwardedFor := r.Header.Get("X-Forwarded-For")
+	if xForwardedFor != "" {
+		// X-Forwarded-For can contain multiple IPs, take the first one
+		ips := strings.Split(xForwardedFor, ",")
+		return strings.TrimSpace(ips[0])
+	}
+
+	// Check for X-Real-IP header
+	xRealIP := r.Header.Get("X-Real-IP")
+	if xRealIP != "" {
+		return xRealIP
+	}
+
+	// Fallback to RemoteAddr
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr
+	}
+	return ip
+}
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +46,9 @@ func main() {
 		}
 
 		b := string(d)
+		clientIP := getClientIP(r)
 
-		log.Printf("request received:\n%s\n\n", b)
+		log.Printf("request received from %s:\n%s\n\n", clientIP, b)
 
 		if _, err := fmt.Fprintf(w, b); err != nil {
 			msg := fmt.Sprintf("couldn't write response: %s", err)
