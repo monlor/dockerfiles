@@ -28,7 +28,7 @@ docker run -d --name media-unlock \
 | `FOFA_WORKERS` | `8` | 并发检测线程数 |
 | `UPDATE_DAYS` | `3` | FOFA 数据刷新周期（天） |
 | `CHECK_INTERVAL` | `60` | IP 可用性检测间隔（秒） |
-| `SERVICES` | `netflix,disney_plus,hbo_max,chatgpt,claude,gemini` | 需要维护的服务列表 |
+| `SERVICES` | `netflix,disney_plus,hbo_max,chatgpt,claude,gemini,meta_ai,bing` | 需要维护的服务列表 |
 | `FOFA_CACHE` | `/tmp/fofa_cache.json` | FOFA 缓存文件路径 |
 | `DNSMASQ_CONF` | `/etc/dnsmasq.conf` | dnsmasq 配置文件路径 |
 | `DOMAINS_ROOT` | `/app/domains` | 服务域名列表目录 |

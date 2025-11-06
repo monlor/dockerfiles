@@ -348,7 +348,7 @@ def check_chatgpt(ip: str, timeout: float) -> ServiceResult:
 
 def check_claude(ip: str, timeout: float) -> ServiceResult:
     try:
-        code, _, _ = request_through_ip(
+        code, headers, _ = request_through_ip(
             ip=ip,
             host="claude.ai",
             path="/",
@@ -357,7 +357,15 @@ def check_claude(ip: str, timeout: float) -> ServiceResult:
     except HTTPRequestError as exc:
         return ServiceResult("network_error", detail=str(exc))
 
-    if code in {200, 301, 302, 307, 308}:
+    location = headers.get("location", "") if headers else ""
+
+    if code in {200}:
+        return ServiceResult("full", extra={"code": str(code)})
+    if code in {301, 302, 307, 308}:
+        if "app-unavailable-in-region" in location:
+            return ServiceResult("blocked", extra={"code": str(code), "location": location})
+        if location:
+            return ServiceResult("full", extra={"code": str(code), "location": location})
         return ServiceResult("full", extra={"code": str(code)})
     if code in {401, 403, 451}:
         return ServiceResult("blocked", extra={"code": str(code)})
@@ -526,8 +534,7 @@ def check_hbo_max(ip: str, timeout: float) -> ServiceResult:
 
     region_match = re.search(r'countryCode=([A-Z]{2})', body)
     available_regions = {match.upper() for match in re.findall(r'"url":"/([a-z]{2})/[a-z]{2}"', body)}
-    if available_regions:
-        available_regions.add("US")
+    available_regions.add("US")
 
     extra = {"code": code}
     if region_match:
@@ -565,6 +572,71 @@ def check_gemini(ip: str, timeout: float) -> ServiceResult:
     if "vpn" in body.lower() or "restricted" in body.lower():
         return ServiceResult("blocked", extra=extra)
     return ServiceResult("blocked", extra=extra)
+
+
+def check_meta_ai(ip: str, timeout: float) -> ServiceResult:
+    try:
+        _, _, body = request_through_ip(
+            ip=ip,
+            host="www.meta.ai",
+            path="/",
+            timeout=timeout,
+            headers={
+                "Accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "Upgrade-Insecure-Requests": "1",
+            },
+        )
+    except HTTPRequestError as exc:
+        return ServiceResult("network_error", detail=str(exc))
+
+    if not body:
+        return ServiceResult("page_error")
+
+    lowered = body.lower()
+    if "abrageoblockederrorroot" in lowered:
+        return ServiceResult("blocked")
+    if "kadabrarootcontainer" in lowered:
+        region_match = re.search(r'"code"\s*:\s*"([A-Z]+_[A-Z0-9]+)"', body)
+        region = None
+        if region_match:
+            token = region_match.group(1)
+            parts = token.split("_")
+            if len(parts) > 1:
+                region = parts[-1]
+        extra = {"token": region_match.group(1)} if region_match else {}
+        if region:
+            extra["region"] = region
+        return ServiceResult("full", extra=extra)
+    return ServiceResult("page_error")
+
+
+def check_bing(ip: str, timeout: float) -> ServiceResult:
+    try:
+        _, _, body = request_through_ip(
+            ip=ip,
+            host="www.bing.com",
+            path="/search?q=curl",
+            timeout=timeout,
+        )
+    except HTTPRequestError as exc:
+        return ServiceResult("network_error", detail=str(exc))
+
+    if not body:
+        return ServiceResult("page_error")
+
+    if "cn.bing.com" in body:
+        return ServiceResult("cn", extra={"region": "CN"})
+
+    region_match = re.search(r'Region\s*:\s*"([A-Z]{2})"', body)
+    region = region_match.group(1) if region_match else None
+
+    if 'sj_cook.set("SRCHHPGUSR","HV"' in body:
+        return ServiceResult("risky", extra={"region": region})
+
+    if region:
+        return ServiceResult("full", extra={"region": region})
+
+    return ServiceResult("unknown")
 
 
 SERVICE_PROFILES: Dict[str, ServiceProfile] = {
@@ -638,6 +710,20 @@ SERVICE_PROFILES: Dict[str, ServiceProfile] = {
         error_statuses=frozenset({"network_error", "service_error"}),
         default_score=0,
     ),
+    "meta_ai": ServiceProfile(
+        category="ai",
+        checker=check_meta_ai,
+        score_map={
+            "full": 100,
+            "page_error": 0,
+            "blocked": 0,
+        },
+        full_statuses=frozenset({"full"}),
+        partial_statuses=frozenset(),
+        blocked_statuses=frozenset({"blocked"}),
+        error_statuses=frozenset({"network_error", "page_error"}),
+        default_score=0,
+    ),
     "gemini": ServiceProfile(
         category="ai",
         checker=check_gemini,
@@ -649,6 +735,21 @@ SERVICE_PROFILES: Dict[str, ServiceProfile] = {
         partial_statuses=frozenset(),
         blocked_statuses=frozenset({"blocked"}),
         error_statuses=frozenset({"network_error"}),
+        default_score=0,
+    ),
+    "bing": ServiceProfile(
+        category="web",
+        checker=check_bing,
+        score_map={
+            "full": 100,
+            "risky": 60,
+            "cn": 30,
+            "blocked": 0,
+        },
+        full_statuses=frozenset({"full"}),
+        partial_statuses=frozenset({"risky", "cn"}),
+        blocked_statuses=frozenset({"blocked"}),
+        error_statuses=frozenset({"network_error", "page_error"}),
         default_score=0,
     ),
 }

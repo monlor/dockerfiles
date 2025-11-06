@@ -109,6 +109,16 @@ DEFAULT_SERVICE_DEFINITIONS: Dict[str, ServiceDefinition] = {
         service_key="gemini",
         domain_files=("gemini.txt",),
     ),
+    "meta_ai": ServiceDefinition(
+        name="meta_ai",
+        service_key="meta_ai",
+        domain_files=("meta_ai.txt",),
+    ),
+    "bing": ServiceDefinition(
+        name="bing",
+        service_key="bing",
+        domain_files=("bing.txt",),
+    ),
 }
 
 
@@ -145,7 +155,14 @@ def load_settings() -> Settings:
         dnsmasq_bin=os.getenv("DNSMASQ_BIN", "dnsmasq"),
         domains_root=Path(os.getenv("DOMAINS_ROOT", Path(__file__).resolve().parent / "domains")),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
-        service_names=[name.strip().lower() for name in os.getenv("SERVICES", "netflix,disney_plus,hbo_max,chatgpt,claude,gemini").split(",") if name.strip()],
+        service_names=[
+            name.strip().lower()
+            for name in os.getenv(
+                "SERVICES",
+                "netflix,disney_plus,hbo_max,chatgpt,claude,gemini,meta_ai,bing",
+            ).split(",")
+            if name.strip()
+        ],
     )
 
 
