@@ -1,12 +1,11 @@
 FROM ubuntu:latest
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 2.0.2
+LABEL VERSION 2.1.0
 
-RUN apt update && apt install dnsmasq bash curl -y && apt clean
+RUN apt update && apt install -y dnsmasq bash curl python3 && apt clean
 
-COPY *.txt /tmp
+WORKDIR /app
+COPY . /app
 
-COPY --chmod=0655 entrypoint.sh /entrypoint.sh
-
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["python3", "/app/entrypoint.py"]
