@@ -366,12 +366,18 @@ def start_dnsmasq(config_path: Path, binary: str) -> subprocess.Popen:
     return proc
 
 
-def reload_dnsmasq(proc: subprocess.Popen) -> None:
+def reload_dnsmasq(proc: subprocess.Popen, config_path: Path, binary: str) -> subprocess.Popen:
+    """Reload dnsmasq config. If process is dead, restart it.
+
+    Returns the (possibly new) dnsmasq process.
+    """
     if proc.poll() is not None:
-        LOGGER.error("dnsmasq is not running (exit code %s)", proc.returncode)
-        return
+        LOGGER.error("dnsmasq is not running (exit code %s); restarting", proc.returncode)
+        return start_dnsmasq(config_path, binary)
+
     LOGGER.debug("Sending SIGHUP to dnsmasq for config reload")
     proc.send_signal(signal.SIGHUP)
+    return proc
 
 
 def build_service_states(settings: Settings) -> List[ServiceState]:
@@ -464,7 +470,7 @@ def main() -> int:
 
             if needs_reload:
                 if render_dnsmasq_config(service_states, settings.dnsmasq_conf):
-                    reload_dnsmasq(dnsmasq_proc)
+                    dnsmasq_proc = reload_dnsmasq(dnsmasq_proc, settings.dnsmasq_conf, settings.dnsmasq_bin)
 
             time.sleep(settings.check_interval)
 
