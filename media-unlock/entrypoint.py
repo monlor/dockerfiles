@@ -362,7 +362,7 @@ def render_dnsmasq_config(states: Sequence[ServiceState], config_path: Path) -> 
 
 def start_dnsmasq(config_path: Path, binary: str) -> subprocess.Popen:
     LOGGER.info("Starting dnsmasq")
-    proc = subprocess.Popen([binary, "-d", "--conf-file", str(config_path)])
+    proc = subprocess.Popen([binary, "-d", "-C", str(config_path)])
     return proc
 
 
