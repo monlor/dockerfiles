@@ -8,6 +8,7 @@ cat > /etc/frp/frps.toml <<EOF
 # frps.toml - Server configuration for frp v0.65.0+
 # Configuration format migrated from INI to TOML
 
+bindAddr = "${BIND_ADDR:-0.0.0.0}"
 bindPort = ${BIND_PORT:-7000}
 
 # vhostHTTPPort and vhostHTTPSPort are used to forward HTTP and HTTPS traffic

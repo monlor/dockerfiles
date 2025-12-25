@@ -8,6 +8,7 @@
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
+| `BIND_ADDR` | frps 服务端监听地址（IPv4/IPv6） | `0.0.0.0` |
 | `BIND_PORT` | frps 服务端监听端口 | `7000` |
 | `VHOST_HTTP_PORT` | HTTP 虚拟主机端口 | `8080` |
 | `VHOST_HTTPS_PORT` | HTTPS 虚拟主机端口 | `8443` |
@@ -69,6 +70,7 @@ docker run -d --name frps \
 
 ```bash
 docker run -d --name frps \
+  -e BIND_ADDR=0.0.0.0 \
   -e BIND_PORT=7000 \
   -e VHOST_HTTP_PORT=8080 \
   -e VHOST_HTTPS_PORT=8443 \
@@ -87,6 +89,7 @@ docker run -d --name frps \
 
 ```bash
 docker run -d --name frps \
+  -e BIND_ADDR=0.0.0.0 \
   -e BIND_PORT=7000 \
   -e VHOST_HTTP_PORT=8080 \
   -e VHOST_HTTPS_PORT=8443 \
@@ -115,6 +118,31 @@ docker run -d --name frps \
   monlor/frps:latest
 ```
 
+## 常见问题
+
+### host 网络模式下外网无法访问
+
+**现象**：使用 `--network=host` 时，端口显示监听但外网无法访问；使用 `-p` 端口映射则正常。
+
+**原因**：在某些系统上，frps 可能只监听 IPv6（:::），而系统的 `net.ipv6.bindv6only=1` 导致 IPv6 socket 不接受 IPv4 连接。
+
+**解决方案**：显式设置 `BIND_ADDR=0.0.0.0` 强制监听 IPv4：
+
+```bash
+docker run -d --name frps \
+  -e BIND_ADDR=0.0.0.0 \
+  -e AUTH_TOKEN=SUQAKTMb87 \
+  --network=host \
+  monlor/frps:latest
+```
+
+验证是否监听 IPv4：
+```bash
+netstat -tulnp | grep frps
+# 应该看到：tcp        0      0 0.0.0.0:7000            0.0.0.0:*               LISTEN
+# 而不是： tcp6       0      0 :::7000                 :::*                    LISTEN
+```
+
 ## 迁移指南
 
 如果你从旧版本（v0.49.0 或更早）升级到 v0.65.0：
@@ -126,6 +154,7 @@ docker run -d --name frps \
 生成的配置文件示例（`/etc/frp/frps.toml`）：
 
 ```toml
+bindAddr = "0.0.0.0"
 bindPort = 7000
 vhostHTTPPort = 8080
 vhostHTTPSPort = 8443
