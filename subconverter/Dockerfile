@@ -1,7 +1,7 @@
-FROM tindy2013/subconverter:latest
+FROM asdlokj1qpi23/subconverter:latest
 
 LABEL MAINTAINER me@monlor.com
-LABEL VERSION 0.9.0
+LABEL VERSION 0.9.9
 
 WORKDIR /base
 RUN apk add tzdata && \
@@ -14,5 +14,3 @@ COPY pref.yml /base
 COPY all_base.tpl /base/base
 
 EXPOSE 25500
-
-
